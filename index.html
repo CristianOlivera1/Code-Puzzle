@@ -16,7 +16,7 @@
     <header class="header">
         <div class="container">
             <div class="flex md:flex-1">
-                <a href="/" class="relative -m-1.5 p-1.5 flex gap-2">
+                <a href="index.html" class="relative -m-1.5 p-1.5 flex gap-2">
                     <img class="size-11" src="assets/images/img/logo.svg" alt="logo">
                     <h1 class="font-black text-3xl md:flex my-1 text-primary-gradient">
                         Code Puzzle
@@ -25,15 +25,64 @@
             </div>
             <nav class="nav">
                 <div id="user-info" class="user-info" style="display: none;">
-                    <span id="username"></span>
-                    <div class="user-actions">
-                        <button id="profile-btn" class="btn btn-secondary">
-                            <i class="fas fa-user"></i> Perfil
-                        </button>
-                        <button id="admin-panel-btn" class="btn btn-secondary" style="display: none;">
-                            <i class="fas fa-cog"></i> Admin
-                        </button>
-                        <button id="logout-btn" class="btn btn-secondary">Cerrar Sesión</button>
+                    <div class="flex items-center gap-4 relative">
+                        <div id="user-dropdown" class="inline-block group cursor-pointer relative">
+                            <div class="flex items-center gap-2" id="user-trigger">
+                                <img id="user-avatar" src="" alt="Foto de perfil" 
+                                     class="w-11 h-11 rounded-full object-cover border-2" 
+                                     style="display: none; border: 1px solid #d1d5db;" />
+                                <div id="user-avatar-placeholder" 
+                                     class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center border-2 border-blue-400">
+                                    <i class="fas fa-user text-white text-lg"></i>
+                                </div>
+                                <span id="username" class="text-gray-200 sm:block font-medium"></span>
+                            </div>
+                            <div id="dropdown-arrow" 
+                                 class="absolute bottom-0 -right-1.5 w-5 h-5 flex items-center justify-center bg-white rounded-full opacity-0 transition-opacity duration-300 border border-gray-300">
+                                <i class="fas fa-chevron-down text-gray-600 text-xs"></i>
+                            </div>
+                        </div>
+                        <!-- Menú desplegable -->
+                        <div id="user-dropdown-menu" 
+                             class="absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-lg z-50 hidden" style="padding: 20px;">
+                            <div class="px-4 py-3 flex gap-3">
+                                <div class="relative flex h-12 w-12 shrink-0 overflow-hidden rounded-full">
+                                    <img id="dropdown-avatar" src="" alt="Foto de perfil" 
+                                         class="w-full h-full object-cover" style="display: none;" />
+                                    <div id="dropdown-avatar-placeholder" 
+                                         class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                        <i class="fas fa-user text-white text-xl"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="dropdown-username" class="text-gray-900 font-medium mb-1"></div>
+                                    <div id="dropdown-email" class="text-sm text-gray-500 line-clamp-1 w-52 xl:w-50"></div>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a id="profile-btn" href="#" 
+                                       class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-gray-600 text-sm" style="padding: 12px 16px;">
+                                        <i class="fas fa-user w-6 h-6 text-center"></i>
+                                        Perfil
+                                    </a>
+                                </li>
+                                <li id="admin-menu-item" style="display: none;">
+                                    <a id="admin-panel-btn" href="#" 
+                                       class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-gray-600 text-sm">
+                                        <i class="fas fa-cog w-6 h-6 text-center"></i>
+                                        Panel de Administración
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="logout-btn" href="#" 
+                                       class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-red-600 text-sm border-t border-gray-200" style="padding: 12px 16px;">
+                                        <i class="fas fa-sign-out-alt w-6 h-6 text-center"></i>
+                                        Cerrar sesión
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div id="auth-buttons">
@@ -290,7 +339,7 @@
 
                             <!-- Botón Google -->
                             <button type="button"
-                                class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
+                                class="google-auth-btn w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
                                 <svg class="size-6" viewBox="0 0 48 48">
                                     <path fill="#FFC107"
                                         d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
@@ -365,7 +414,7 @@
 
                             <!-- Botón Google -->
                             <button type="button"
-                                class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
+                                class="google-auth-btn w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
                                 <svg class="size-6" viewBox="0 0 48 48">
                                     <path fill="#FFC107"
                                         d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />

@@ -11,7 +11,7 @@ body {
     color: #333;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    background-image: url('/assets/images/img/a.svg');
+    background-image: url('../images/img/a.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -1406,3 +1406,27 @@ background-color: #F3A20F;
   }
 }
 
+/* Estilos para el dropdown de usuario */
+#user-dropdown {
+    position: relative;
+}
+
+#user-dropdown-menu {
+    animation: fadeIn2 0.15s ease-out;
+    transform-origin: top right;
+}
+
+@keyframes fadeIn2 {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+#dropdown-arrow i {
+    transition: transform 0.3s ease;
+}

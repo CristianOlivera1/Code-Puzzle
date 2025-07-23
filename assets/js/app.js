@@ -14,8 +14,27 @@ const App = {
     // Inicialización
     init() {
         this.setupEventListeners();
+        this.checkGoogleAuthToken(); // Verificar token de Google OAuth
         this.checkSession();
         this.loadLanguages();
+    },
+    
+    // Verificar token de Google OAuth en la URL
+    checkGoogleAuthToken() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const googleToken = urlParams.get('google_auth');
+        
+        if (googleToken) {
+            console.log('Token de Google encontrado en URL:', googleToken);
+            
+            // Limpiar la URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Manejar el token de Google
+            this.handleGoogleAuthSuccess(googleToken);
+        } else {
+
+        }
     },
     
     // Configurar event listeners
@@ -88,6 +107,17 @@ const App = {
             e.preventDefault();
             this.register();
         });
+
+        // Botones de Google OAuth
+        document.querySelectorAll('.google-auth-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.googleLogin();
+            });
+        });
+        
+        // Dropdown de usuario
+        this.setupUserDropdown();
         
         // Juego
         document.getElementById('check-solution').addEventListener('click', () => {
@@ -121,6 +151,77 @@ const App = {
         });
     },
     
+    // Configurar dropdown de usuario
+    setupUserDropdown() {
+        const userTrigger = document.getElementById('user-trigger');
+        const dropdownMenu = document.getElementById('user-dropdown-menu');
+        const dropdownArrow = document.getElementById('dropdown-arrow');
+        const userDropdown = document.getElementById('user-dropdown');
+        
+        if (userTrigger && dropdownMenu) {
+            // Toggle dropdown al hacer clic
+            userTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isVisible = !dropdownMenu.classList.contains('hidden');
+                if (isVisible) {
+                    this.hideUserDropdown();
+                } else {
+                    this.showUserDropdown();
+                }
+            });
+            
+            // Efectos de hover
+            userDropdown.addEventListener('mouseenter', () => {
+                dropdownArrow.classList.remove('opacity-0');
+                dropdownArrow.classList.add('opacity-100');
+            });
+            
+            userDropdown.addEventListener('mouseleave', () => {
+                if (dropdownMenu.classList.contains('hidden')) {
+                    dropdownArrow.classList.remove('opacity-100');
+                    dropdownArrow.classList.add('opacity-0');
+                }
+            });
+            
+            // Cerrar dropdown al hacer clic fuera
+            document.addEventListener('click', (e) => {
+                if (!userDropdown.contains(e.target)) {
+                    this.hideUserDropdown();
+                }
+            });
+        }
+    },
+    
+    // Mostrar dropdown de usuario
+    showUserDropdown() {
+        const dropdownMenu = document.getElementById('user-dropdown-menu');
+        const dropdownArrow = document.getElementById('dropdown-arrow');
+        
+        if (dropdownMenu) {
+            dropdownMenu.classList.remove('hidden');
+            dropdownArrow.classList.remove('opacity-0');
+            dropdownArrow.classList.add('opacity-100');
+            
+            // Rotar flecha
+            dropdownArrow.querySelector('i').style.transform = 'rotate(180deg)';
+        }
+    },
+    
+    // Ocultar dropdown de usuario
+    hideUserDropdown() {
+        const dropdownMenu = document.getElementById('user-dropdown-menu');
+        const dropdownArrow = document.getElementById('dropdown-arrow');
+        
+        if (dropdownMenu) {
+            dropdownMenu.classList.add('hidden');
+            dropdownArrow.classList.remove('opacity-100');
+            dropdownArrow.classList.add('opacity-0');
+            
+            // Rotar flecha de vuelta
+            dropdownArrow.querySelector('i').style.transform = 'rotate(0deg)';
+        }
+    },
+    
     // Verificar sesión existente
     async checkSession() {
         const userData = localStorage.getItem('puzzleCodeUser');
@@ -137,19 +238,26 @@ const App = {
         const registerForm = document.getElementById('register-form');
         
         if (type === 'register') {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
+            if (loginForm) loginForm.style.display = 'none';
+            if (registerForm) registerForm.style.display = 'block';
         } else {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
+            if (loginForm) loginForm.style.display = 'block';
+            if (registerForm) registerForm.style.display = 'none';
         }
         
-        modal.style.display = 'block';
+        if (modal) {
+            modal.classList.remove('hidden');
+            modal.style.display = 'block';
+        }
     },
     
     // Ocultar modal de autenticación
     hideAuthModal() {
-        document.getElementById('auth-modal').style.display = 'none';
+        const modal = document.getElementById('auth-modal');
+        if (modal) {
+            modal.classList.add('hidden');
+            modal.style.display = 'none';
+        }
     },
     
     // Login
@@ -223,29 +331,267 @@ const App = {
             this.showNotification('Error al cerrar sesión', 'error');
         }
     },
+
+    // Google OAuth Login
+    async googleLogin() {
+        try {
+            const response = await fetch('php/controllers/auth.php?action=googleAuth');
+            const data = await response.json();
+            
+            if (data.success && data.auth_url) {
+                // Calcular posición central del popup
+                const screenWidth = window.screen.width;
+                const screenHeight = window.screen.height;
+                const popupWidth = 500;
+                const popupHeight = 600;
+                const left = (screenWidth - popupWidth) / 2;
+                const top = (screenHeight - popupHeight) / 2;
+                
+                // Abrir ventana para autenticación centrada
+                const popup = window.open(
+                    data.auth_url, 
+                    'google-auth', 
+                    `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes,status=no,menubar=no,toolbar=no`
+                );
+                
+                // Función para manejar mensajes del popup
+                const handleMessage = (event) => {
+                    // Verificar origen por seguridad
+                    if (event.origin !== window.location.origin) return;
+                    
+                    if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
+                        // Remover el event listener
+                        window.removeEventListener('message', handleMessage);
+                        
+                        // Limpiar el interval de verificación
+                        if (checkClosed) {
+                            clearInterval(checkClosed);
+                        }
+                        
+                        // Cerrar popup si aún está abierto (con manejo de errores)
+                        try {
+                            if (popup && !popup.closed) {
+                                popup.close();
+                            }
+                        } catch (e) {
+                            // Ignorar errores de CORS al cerrar popup
+                            console.log('Popup se cerró automáticamente por la política de CORS');
+                        }
+                        
+                        // Procesar autenticación exitosa
+                        this.handleGoogleAuthSuccess(event.data.token);
+                    } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
+                        // Remover el event listener
+                        window.removeEventListener('message', handleMessage);
+                        
+                        // Limpiar el interval de verificación
+                        if (checkClosed) {
+                            clearInterval(checkClosed);
+                        }
+                        
+                        // Cerrar popup si aún está abierto (con manejo de errores)
+                        try {
+                            if (popup && !popup.closed) {
+                                popup.close();
+                            }
+                        } catch (e) {
+                            // Ignorar errores de CORS al cerrar popup
+                            console.log('Popup se cerró automáticamente por la política de CORS');
+                        }
+                        
+                        this.showNotification('Error en la autenticación con Google', 'error');
+                    }
+                };
+                
+                // Agregar el event listener
+                window.addEventListener('message', handleMessage);
+                
+                // Verificar si la ventana se cerró manualmente (con manejo mejorado de errores)
+                const checkClosed = setInterval(() => {
+                    try {
+                        if (popup.closed) {
+                            clearInterval(checkClosed);
+                            // Remover el event listener si la ventana se cerró manualmente
+                            window.removeEventListener('message', handleMessage);
+                            console.log('Popup cerrado manualmente por el usuario');
+                        }
+                    } catch (e) {
+                        // Si no podemos acceder a popup.closed debido a CORS, asumir que está cerrado
+                        clearInterval(checkClosed);
+                        window.removeEventListener('message', handleMessage);
+                        console.log('No se puede verificar el estado del popup debido a políticas de CORS');
+                    }
+                }, 1000);
+                
+            } else {
+                this.showNotification('Error al inicializar Google OAuth', 'error');
+                console.error('Respuesta del servidor:', data);
+            }
+        } catch (error) {
+            this.showNotification('Error de conexión con Google', 'error');
+            console.error('Error:', error);
+        }
+    },
+
+    // Manejar éxito de autenticación Google
+    async handleGoogleAuthSuccess(token) {
+        try {
+            
+            // Decodificar el token que viene del popup
+            let tokenData;
+            try {
+                tokenData = JSON.parse(atob(token));
+            } catch (decodeError) {
+                console.error('Error al decodificar token:', decodeError);
+                throw new Error('Token inválido');
+            }
+            
+            // Verificar que el token sea válido y no haya expirado
+            if (!tokenData.success || !tokenData.user) {
+                throw new Error('Token no contiene datos de usuario válidos');
+            }
+            
+            // Verificar expiración (5 minutos)
+            const now = Math.floor(Date.now() / 1000);
+            if (now - tokenData.timestamp > 300) {
+                throw new Error('Token expirado');
+            }
+            
+            // Usar los datos del usuario directamente del token
+            this.currentUser = tokenData.user;
+            
+            // Guardar en localStorage
+            localStorage.setItem('puzzleCodeUser', JSON.stringify(tokenData.user));
+            
+            this.updateUI();
+            
+            this.hideAuthModal();
+            
+            // Mostrar notificación de éxito
+            if (tokenData.isNewUser) {
+                this.showNotification('¡Cuenta creada exitosamente con Google! Bienvenido a Code Puzzle.', 'success');
+            } else {
+                this.showNotification(`¡Bienvenido de vuelta, ${tokenData.user.nombre}!`, 'success');
+            }
+            
+        } catch (error) {
+            console.error('Error en handleGoogleAuthSuccess:', error);
+            this.showNotification('Error al procesar la autenticación: ' + error.message, 'error');
+        }
+    },
     
     // Actualizar interfaz de usuario
     updateUI() {
         const userInfo = document.getElementById('user-info');
         const authButtons = document.getElementById('auth-buttons');
         const username = document.getElementById('username');
-        const adminBtn = document.getElementById('admin-panel-btn');
+        const adminMenuItem = document.getElementById('admin-menu-item');
+        
+        // Elementos del dropdown
+        const userAvatar = document.getElementById('user-avatar');
+        const userAvatarPlaceholder = document.getElementById('user-avatar-placeholder');
+        const dropdownAvatar = document.getElementById('dropdown-avatar');
+        const dropdownAvatarPlaceholder = document.getElementById('dropdown-avatar-placeholder');
+        const dropdownUsername = document.getElementById('dropdown-username');
+        const dropdownEmail = document.getElementById('dropdown-email');
         
         if (this.currentUser) {
-            username.textContent = this.currentUser.nombre;
-            userInfo.style.display = 'flex';
-            authButtons.style.display = 'none';
+            console.log('Actualizando UI con usuario:', this.currentUser);
             
-            // Mostrar botón de admin solo si es administrador
-            if (this.currentUser.rol === 'Administrador') {
-                adminBtn.style.display = 'inline-flex';
-            } else {
-                adminBtn.style.display = 'none';
+            // Mostrar información del usuario en el header
+            if (username) {
+                username.textContent = this.currentUser.nombre || this.currentUser.nombreUsuario;
             }
+            
+            // Actualizar avatares
+            if (this.currentUser.foto && this.currentUser.foto !== '') {
+                // Mostrar imagen de avatar
+                if (userAvatar) {
+                    userAvatar.src = this.currentUser.foto;
+                    userAvatar.style.display = 'block';
+                }
+                if (userAvatarPlaceholder) {
+                    userAvatarPlaceholder.style.display = 'none';
+                }
+                if (dropdownAvatar) {
+                    dropdownAvatar.src = this.currentUser.foto;
+                    dropdownAvatar.style.display = 'block';
+                }
+                if (dropdownAvatarPlaceholder) {
+                    dropdownAvatarPlaceholder.style.display = 'none';
+                }
+            } else {
+                // Mostrar placeholder de avatar
+                if (userAvatar) {
+                    userAvatar.style.display = 'none';
+                }
+                if (userAvatarPlaceholder) {
+                    userAvatarPlaceholder.style.display = 'flex';
+                }
+                if (dropdownAvatar) {
+                    dropdownAvatar.style.display = 'none';
+                }
+                if (dropdownAvatarPlaceholder) {
+                    dropdownAvatarPlaceholder.style.display = 'flex';
+                }
+            }
+            
+            // Actualizar información del dropdown
+            if (dropdownUsername) {
+                dropdownUsername.textContent = this.currentUser.nombre || this.currentUser.nombreUsuario;
+            }
+            if (dropdownEmail) {
+                dropdownEmail.textContent = this.currentUser.correo || this.currentUser.email || '';
+            }
+            
+            // Mostrar/ocultar elementos principales
+            if (userInfo) {
+                userInfo.style.display = 'flex';
+            }
+            
+            if (authButtons) {
+                authButtons.style.display = 'none';
+            }
+            
+            // Mostrar opción de admin solo si es administrador
+            if (adminMenuItem) {
+                if (this.currentUser.rol === 'Administrador' || this.currentUser.nombreRol === 'Administrador') {
+                    adminMenuItem.style.display = 'block';
+                } else {
+                    adminMenuItem.style.display = 'none';
+                }
+            }
+            
         } else {
-            userInfo.style.display = 'none';
-            authButtons.style.display = 'flex';
+            console.log('Ocultando UI de usuario - no hay usuario logueado');
+            
+            if (userInfo) {
+                userInfo.style.display = 'none';
+            }
+            
+            if (authButtons) {
+                authButtons.style.display = 'flex';
+            }
+            
+            // Ocultar dropdown si está visible
+            this.hideUserDropdown();
         }
+        
+        console.log('UI actualizada');
+    },
+    
+    // Función de debug para verificar el estado
+    debugState() {
+        console.log('=== DEBUG ESTADO APLICACIÓN ===');
+        console.log('Usuario actual:', this.currentUser);
+        console.log('localStorage:', localStorage.getItem('puzzleCodeUser'));
+        console.log('Elementos UI:');
+        console.log('- user-info:', document.getElementById('user-info')?.style.display);
+        console.log('- auth-buttons:', document.getElementById('auth-buttons')?.style.display);
+        console.log('- username:', document.getElementById('username')?.textContent);
+        console.log('- dropdown-username:', document.getElementById('dropdown-username')?.textContent);
+        console.log('- dropdown-email:', document.getElementById('dropdown-email')?.textContent);
+        console.log('==============================');
     },
     
     // Cargar lenguajes

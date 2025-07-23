@@ -88,5 +88,63 @@ class Usuario {
         
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    // Obtener usuario por correo (para Google OAuth)
+    public function obtenerPorCorreo($correo) {
+        $query = "SELECT u.*, r.nombre as nombreRol 
+                  FROM " . $this->table . " u 
+                  INNER JOIN rol r ON u.idRol = r.idRol 
+                  WHERE u.correo = :correo";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':correo', $correo);
+        $stmt->execute();
+        
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Crear usuario con Google OAuth (sin contraseña)
+    public function crearConGoogle($nombreUsuario, $correo, $foto) {
+        $query = "INSERT INTO " . $this->table . " 
+                  SET nombreUsuario=:nombreUsuario, correo=:correo, contrasena='', 
+                      foto=:foto, idRol=2, estadoConexion=1";
+        
+        $stmt = $this->conn->prepare($query);
+        
+        // Limpiar datos
+        $nombreUsuario = htmlspecialchars(strip_tags($nombreUsuario));
+        $correo = htmlspecialchars(strip_tags($correo));
+        $foto = htmlspecialchars(strip_tags($foto));
+        
+        // Bind parameters
+        $stmt->bindParam(':nombreUsuario', $nombreUsuario);
+        $stmt->bindParam(':correo', $correo);
+        $stmt->bindParam(':foto', $foto);
+        
+        if($stmt->execute()) {
+            return $this->conn->lastInsertId();
+        }
+        return false;
+    }
+
+    // Actualizar información de Google OAuth
+    public function actualizarInfoGoogle($idUsuario, $nombreUsuario, $foto) {
+        $query = "UPDATE " . $this->table . " 
+                  SET nombreUsuario=:nombreUsuario, foto=:foto, estadoConexion=1 
+                  WHERE idUsuario=:idUsuario";
+        
+        $stmt = $this->conn->prepare($query);
+        
+        // Limpiar datos
+        $nombreUsuario = htmlspecialchars(strip_tags($nombreUsuario));
+        $foto = htmlspecialchars(strip_tags($foto));
+        
+        // Bind parameters
+        $stmt->bindParam(':nombreUsuario', $nombreUsuario);
+        $stmt->bindParam(':foto', $foto);
+        $stmt->bindParam(':idUsuario', $idUsuario);
+        
+        return $stmt->execute();
+    }
 }
 ?>
