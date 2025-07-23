@@ -1,0 +1,20 @@
+# Denegar ejecución de scripts PHP y otros tipos de archivos ejecutables
+<Files ~ "\.(php|php3|php4|php5|phtml|pl|py|jsp|asp|sh|cgi)$">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Permitir solo archivos de imagen
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Prevenir listado de directorios
+Options -Indexes
+
+# Establecer headers de seguridad para imágenes
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Header set X-Content-Type-Options nosniff
+    Header set Content-Disposition inline
+</FilesMatch>

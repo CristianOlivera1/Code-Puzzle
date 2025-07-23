@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Code - Juego Educativo de Programación</title>
+    <link rel="stylesheet" href="assets/output.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/audio.css">
+    <link rel="stylesheet" href="assets/css/characters.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="flex md:flex-1">
+                <a href="/" class="relative -m-1.5 p-1.5 flex gap-2">
+                    <img class="size-11" src="assets/images/img/logo.svg" alt="logo">
+                    <h1 class="font-black text-3xl hidden md:flex my-1 text-primary-gradient">
+                        Code Puzzle
+                    </h1>
+                </a>
+            </div>
+            <nav class="nav">
+                <div id="user-info" class="user-info" style="display: none;">
+                    <span id="username"></span>
+                    <div class="user-actions">
+                        <button id="profile-btn" class="btn btn-secondary">
+                            <i class="fas fa-user"></i> Perfil
+                        </button>
+                        <button id="admin-panel-btn" class="btn btn-secondary" style="display: none;">
+                            <i class="fas fa-cog"></i> Admin
+                        </button>
+                        <button id="logout-btn" class="btn btn-secondary">Cerrar Sesión</button>
+                    </div>
+                </div>
+                <div id="auth-buttons">
+                    <button id="login-btn" class="px-1 text-sm sm:text-lg sm:px-2 sm:py-1 rounded mr-0 md:mr-2 hover:text-gray-400 text-white" style="margin-right: 8px;">Iniciar Sesión</button>
+                    <button id="register-btn" class="text-sm sm:text-lg sm:px-2 sm:py-2 md:px-6 md:py-2 rounded-full registro-anim text-white primary-gradient" style="padding: 8px 16px;">Registrarse</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Pantalla de inicio -->
+        <section>
+            <div class="container">
+                <section class="relative flex items-center justify-center min-h-[65vh] px-4 fade-in">
+                    <div class="absolute top-12 left-10 z-0 floating-cloud">
+                        <img src="assets/images/img/cloud.svg" alt="nubess" />
+                    </div>
+
+                    <div class="text-center max-w-4xl mx-auto z-10 mt-30">
+                        <img src="assets/images/img/banner.svg" alt="banner svg" style="margin-bottom: 1rem;" />
+                        <div class="inline-block my-8 transform -rotate-3">
+                            <div class="border-2 border-yellow-400 bg-primary-yellow rounded-lg shadow-lg px-4 py-3 relative magic"
+                                style="box-shadow: 0 0.5em 0 0 rgba(221, 31, 251, 0.264);">
+                                <span class="magic-star" style="--star-left: 14%; --star-top: -20%;">
+                                    <svg viewBox="0 0 512 512">
+                                        <path
+                                            d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z">
+                                        </path>
+                                    </svg>
+                                </span>
+
+                                <span class="magic-star" style="--star-left: -9%; --star-top: -27%;">
+                                    <svg viewBox="0 0 512 512">
+                                        <path
+                                            d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z">
+                                        </path>
+                                    </svg>
+                                </span>
+
+                                <span class="magic-star" style="--star-left: 105%; --star-top: 15%;">
+                                    <svg viewBox="0 0 512 512">
+                                        <path
+                                            d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z">
+                                        </path>
+                                    </svg>
+                                </span>
+
+                                <h2 class="magic-text text-white text-center font-black text-3xl md:text-5xl leading-tight tracking-wide relative z-10 flex"
+                                    style="margin-top: 0.1em; margin-left: 0.25em; margin-right: 0.25em; line-height: 0.9;">
+                                    <span class="mx-auto flex items-center justify-center">
+                                        PR
+                                        <svg class="logo-svg" width="70" height="70" viewBox="0 0 70 70" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <g clip-path="url(#clip0_2294_11)">
+                                                <ellipse class="line" cx="34.1591" cy="34.5374" rx="30" ry="30"
+                                                    transform="rotate(-3.58186 34.1591 34.5374)" fill="black"
+                                                    stroke="white" stroke-width="3" />
+                                                <path
+                                                    d="M38.9178 17.6564C39.4936 17.8697 39.9599 18.3036 40.2142 18.8628C40.4684 19.4219 40.4897 20.0605 40.2735 20.6381L29.5758 49.2522C29.4733 49.5444 29.3137 49.8134 29.1063 50.0436C28.8989 50.2739 28.6479 50.4606 28.368 50.5929C28.0882 50.7252 27.785 50.8005 27.4765 50.8142C27.1679 50.8279 26.86 50.7799 26.5709 50.6729C26.2818 50.5659 26.0173 50.4021 25.7929 50.1911C25.5685 49.9801 25.3887 49.7261 25.264 49.4441C25.1394 49.1621 25.0724 48.8577 25.067 48.5487C25.0616 48.2397 25.1179 47.9324 25.2326 47.6448L35.9303 19.0307C36.1468 18.4531 36.5831 17.9839 37.1434 17.7262C37.7036 17.4685 38.3418 17.4434 38.9178 17.6564ZM22.6561 26.0845C22.8961 26.2716 23.0966 26.5045 23.2462 26.7698C23.3957 27.0351 23.4913 27.3277 23.5275 27.6307C23.5637 27.9337 23.5397 28.2412 23.4571 28.5356C23.3744 28.8301 23.2345 29.1056 23.0456 29.3466L18.5559 35.0682L23.69 40.1689C24.1252 40.6018 24.3698 41.1911 24.3698 41.8071C24.3699 42.423 24.1254 43.0152 23.6902 43.4533C23.4747 43.6703 23.2189 43.8429 22.9373 43.9613C22.6558 44.0797 22.354 44.1415 22.0492 44.1434C21.4337 44.147 20.8434 43.9059 20.4081 43.4729L13.8176 36.9262C13.416 36.5268 13.1755 35.993 13.1417 35.4259C13.1079 34.8588 13.2832 34.2978 13.6344 33.8491L19.3971 26.4933C19.5855 26.252 19.8194 26.0499 20.0854 25.8987C20.3514 25.7475 20.6443 25.6501 20.9473 25.6121C21.2503 25.5741 21.5575 25.5963 21.8512 25.6773C22.145 25.7583 22.4164 25.8968 22.6561 26.0845ZM44.2896 24.6676C44.5051 24.4506 44.7609 24.2779 45.0424 24.1595C45.324 24.0411 45.6258 23.9792 45.9306 23.9773C46.2354 23.9755 46.5372 24.0338 46.8188 24.1489C47.1004 24.264 47.3562 24.4336 47.5717 24.648L54.1622 31.1947C54.5638 31.5941 54.8043 32.1279 54.8381 32.695C54.8719 33.2621 54.6966 33.8231 54.3454 34.2718L48.5827 41.6276C48.2021 42.114 47.645 42.4303 47.0338 42.507C46.4227 42.5836 45.8075 42.4144 45.3237 42.0364C44.84 41.6585 44.5271 41.1028 44.4541 40.4916C44.3811 39.8804 44.5539 39.2638 44.9344 38.7774L49.4175 33.05L44.2898 27.952C44.0743 27.7377 43.9032 27.4827 43.7866 27.2016C43.6699 26.9205 43.6098 26.6189 43.6098 26.3138C43.6097 26.0088 43.6698 25.7065 43.7864 25.424C43.9031 25.1415 44.074 24.8845 44.2896 24.6676Z"
+                                                    fill="url(#paint0_linear_2294_11)" />
+                                            </g>
+                                            <defs>
+                                                <linearGradient id="paint0_linear_2294_11" x1="67.7515" y1="90.2978"
+                                                    x2="-10.4296" y2="60.9196" gradientUnits="userSpaceOnUse">
+                                                    <stop stop-color="#C8BDFF" />
+                                                    <stop offset="0.277068" stop-color="#B5EDFF" />
+                                                    <stop offset="0.49578" stop-color="#00CBFF" />
+                                                    <stop offset="0.761667" stop-color="#B18CFF" />
+                                                    <stop offset="1" stop-color="#C8BDFF" />
+                                                </linearGradient>
+                                                <clipPath id="clip0_2294_11">
+                                                    <rect width="65" height="65" fill="white"
+                                                        transform="matrix(0.997862 -0.0653567 0.0594356 0.998232 0.43457 4.72925)" />
+                                                </clipPath>
+                                            </defs>
+                                        </svg>
+                                        GRAMACIÓN
+                                    </span>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: center;">
+                            <p class="text-lg md:text-xl text-gray-300 max-w-xl mx-auto leading-relaxed text-center"
+                                style="margin-top: 2rem; margin-bottom: 1rem;">
+                                Mejora tus habilidades de programación resolviendo desafíos interactivos en múltiples
+                                lenguajes
+                            </p>
+                        </div>
+
+                        <button id="start-game-btn" class="btn btn-large primary-gradient text-white">Comenzar a Jugar</button>
+                    </div>
+                    <div class="absolute bottom-0 right-70 z-0">
+                        <img src="assets/images/img/foco.svg" alt="foco-hand" />
+                    </div>
+                </section>
+
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-code"></i>
+                        <h3>Múltiples Lenguajes</h3>
+                        <p>JavaScript, Python, Java, C++ y más</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Sistema de Estrellas</h3>
+                        <p>Gana estrellas basado en tu velocidad</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Progreso Personalizado</h3>
+                        <p>Seguimiento de tu avance y mejores tiempos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selección de lenguaje -->
+        <section id="language-screen" class="screen">
+            <div class="container">
+                <h2>Selecciona un Lenguaje</h2>
+                <div id="languages-grid" class="languages-grid">
+                    <!-- Se llenarán dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Selección de nivel -->
+        <section id="level-screen" class="screen">
+            <div class="container">
+                <div class="level-header">
+                    <button id="back-to-languages" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </button>
+                    <h2 id="language-title"></h2>
+                </div>
+                <div id="levels-grid" class="levels-grid">
+                    <!-- Se llenarán dinámicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Pantalla de juego -->
+        <section id="game-screen" class="screen">
+            <div class="container">
+                <div class="game-header">
+                    <button id="back-to-levels" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </button>
+                    <div class="game-info">
+                        <h3 id="level-title"></h3>
+                        <div class="game-stats">
+                            <div class="timer">
+                                <i class="fas fa-clock"></i>
+                                <span id="timer">00:00</span>
+                            </div>
+                            <div class="progress-indicator">
+                                <i class="fas fa-puzzle-piece"></i>
+                                <span id="progress-display">0/0</span>
+                            </div>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <span id="stars-display">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-content">
+                    <div class="help-section">
+                        <h4>Objetivo:</h4>
+                        <p id="help-description"></p>
+                    </div>
+
+                    <div class="code-puzzle">
+                        <div class="puzzle-container">
+                            <div class="code-source">
+                                <h4><i class="fas fa-code"></i> Líneas de Código:</h4>
+                                <p class="instruction">Arrastra las líneas hacia el área de solución</p>
+                                <div id="code-source-blocks" class="code-blocks source">
+                                    <!-- Se llenarán dinámicamente -->
+                                </div>
+                            </div>
+
+                            <div class="arrow-indicator">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+
+                            <div class="code-solution">
+                                <h4><i class="fas fa-puzzle-piece"></i> Tu Solución:</h4>
+                                <p class="instruction">Ordena las líneas aquí en el orden correcto</p>
+                                <div id="code-solution-blocks" class="code-blocks solution">
+                                    <div class="drop-zone-placeholder">
+                                        <i class="fas fa-mouse-pointer"></i>
+                                        <p>Arrastra las líneas de código aquí</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button id="check-solution" class="btn btn-primary">
+                            <i class="fas fa-check"></i> Verificar Solución
+                        </button>
+                        <button id="reset-puzzle" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reiniciar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de autenticación -->
+    <div id="auth-modal" class="modal fixed inset-0 z-50 hidden">
+        <div class="min-h-screen relative overflow-hidden bg-black">
+            <!-- Alert para mensajes -->
+            <div id="alert-container" class="fixed top-5 right-5 z-50 hidden">
+                <div id="alert-box" class="flex items-center p-4 rounded-lg shadow-lg w-auto" role="alert">
+                    <svg id="alert-icon" class="shrink-0 size-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M16.707 5.293a1 1 0 0 0-1.414 0L9 11.586 6.707 9.293a1 1 0 0 0-1.414 1.414l3 3a1 1 0 0 0 1.414 0l7-7a1 1 0 0 0 0-1.414Z" />
+                    </svg>
+                    <span id="alert-message" class="text-sm font-medium"></span>
+                </div>
+            </div>
+
+            <!-- Decoración SVG -->
+            <img src="assets/images/img/dots-login-register.svg" alt="Decoración SVG" class="absolute top-0 left-0 w-xl z-0 pointer-events-none" />
+
+            <div class="grid h-full min-h-screen lg:grid-cols-2">
+                <!-- Panel izquierdo - Formularios -->
+                <div class="flex justify-center px-4 py-8">
+                    <div class="relative flex w-full max-w-[450px] flex-col items-start justify-center">
+                        <!-- Logo y título -->
+                        <div class="flex items-center gap-3 mb-8">
+                            <img src="assets/images/img/logo.svg" alt="Logo" class="w-12 h-12">
+                            <h1 class="text-4xl font-black text-primary-gradient">Code Puzzle</h1>
+                        </div>
+
+                        <!-- Formulario de Login -->
+                        <div id="login-form" class="auth-form w-full">
+                            <h2 class="text-xl font-semibold text-white mb-2">Bienvenido nuevamente, jugador!</h2>
+                            <p class="text-gray-400 mb-8">Inicia sesión para liberar la aventura!</p>
+
+                            <!-- Botón Google -->
+                            <button type="button" class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
+                                <svg class="size-6" viewBox="0 0 48 48">
+                                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                </svg>
+                                Continuar con Google
+                            </button>
+
+                            <!-- Separador -->
+                            <div class="relative w-full mb-6">
+                                <div class="absolute inset-0 flex items-center">
+                                    <span class="w-full border-t border-slate-600"></span>
+                                </div>
+                                <div class="relative flex justify-center text-xs uppercase">
+                                    <span class="bg-black px-3 text-gray-400">O</span>
+                                </div>
+                            </div>
+
+                            <!-- Formulario -->
+                            <form class="space-y-5 w-full">
+                                <div>
+                                    <input type="email" id="login-email" placeholder="Email" 
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                        required>
+                                </div>
+                                <div class="relative">
+                                    <input type="password" id="login-password" placeholder="Contraseña" 
+                                        class="w-full px-4 py-3 pr-12 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                        required>
+                                    <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                        <svg id="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="flex justify-end">
+                                    <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">¿Olvidaste tu contraseña?</a>
+                                </div>
+
+                                <button type="submit" class="w-full primary-gradient font-bold py-3 px-6 rounded-lg transition-all text-white duration-200 transform hover:scale-105 mt-6">
+                                    INICIAR SESIÓN
+                                </button>
+                            </form>
+
+                            <div class="mt-6 text-center w-full">
+                                <span class="text-gray-400">¿No tienes una cuenta?
+                                    <a href="#" id="show-register" class="text-bold font-semibold text-white hover:underline">Registrarse</a>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Formulario de Registro -->
+                        <div id="register-form" class="auth-form w-full" style="display: none;">
+                            <h2 class="text-xl font-semibold text-white mb-2">¡Únete a la aventura!</h2>
+                            <p class="text-gray-400 mb-8">Crea tu cuenta para comenzar a programar</p>
+
+                            <!-- Botón Google -->
+                            <button type="button" class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
+                                <svg class="size-6" viewBox="0 0 48 48">
+                                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                </svg>
+                                Continuar con Google
+                            </button>
+
+                            <!-- Separador -->
+                            <div class="relative w-full mb-6">
+                                <div class="absolute inset-0 flex items-center">
+                                    <span class="w-full border-t border-slate-600"></span>
+                                </div>
+                                <div class="relative flex justify-center text-xs uppercase">
+                                    <span class="bg-black px-3 text-gray-400">O</span>
+                                </div>
+                            </div>
+
+                            <!-- Formulario -->
+                            <form class="space-y-5 w-full">
+                                <div>
+                                    <input type="text" id="register-username" placeholder="Nombre de usuario" 
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                        required>
+                                </div>
+                                <div>
+                                    <input type="email" id="register-email" placeholder="Email" 
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                        required>
+                                </div>
+                                <div class="relative">
+                                    <input type="password" id="register-password" placeholder="Contraseña" 
+                                        class="w-full px-4 py-3 pr-12 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                        required>
+                                    <button type="button" id="toggle-register-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                        <svg id="eye-register-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <button type="submit" class="w-full primary-gradient font-bold py-3 px-6 rounded-lg transition-all text-white duration-200 transform hover:scale-105 mt-6">
+                                    REGISTRARSE
+                                </button>
+                            </form>
+
+                            <div class="mt-6 text-center w-full">
+                                <span class="text-gray-400">¿Ya tienes una cuenta?
+                                    <a href="#" id="show-login" class="text-bold font-semibold text-white hover:underline">Inicia sesión</a>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Botón cerrar -->
+                        <button class="close absolute top-4 right-4 text-gray-400 hover:text-white text-2xl z-10">&times;</button>
+                    </div>
+                </div>
+
+                <!-- Panel derecho - Ilustración -->
+                <div class="hidden lg:flex flex-1 bg-gradient-to-br items-center justify-center p-8">
+                    <img src="assets/images/img/dev-login.svg" alt="Login Illustration" class="w-full h-full max-h-screen object-cover rounded-xl shadow-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de resultado -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <div class="result-content">
+                <div id="result-icon"></div>
+                <h3 id="result-title"></h3>
+                <p id="result-message"></p>
+                <div id="result-stars" class="stars-result"></div>
+                <div class="result-actions">
+                    <button id="next-level" class="btn btn-primary" style="display: none;">Siguiente Nivel</button>
+                    <button id="retry-level" class="btn btn-secondary">Intentar de Nuevo</button>
+                    <button id="back-to-menu" class="btn btn-secondary">Volver al Menú</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor del Sistema de Personajes -->
+    <div id="character-container" class="character-container" style="display: none;">
+        <img id="character-sprite" src="assets/characters/mascot/idle.svg" alt="Personaje mascota">
+        <div id="speech-bubble" class="speech-bubble" style="display: none;">
+            <p id="speech-text"></p>
+        </div>
+    </div>
+
+    <!-- Contenedor de Efectos de Celebración -->
+    <div id="celebration-effects" class="effects-overlay" style="display: none;">
+        <img id="celebration-gif" src="" alt="Efecto de celebración">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="assets/js/audio.js"></script>
+    <script src="assets/js/characters.js"></script>
+    <script src="assets/js/animation.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Personajes</title>
+    <link rel="stylesheet" href="assets/css/characters.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #5a67d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🎭 Test del Sistema de Personajes</h1>
+        <p>Esta es una página de prueba para verificar que el sistema de personajes funciona correctamente.</p>
+        
+        <div>
+            <h3>Controles de Prueba:</h3>
+            <button class="test-button" onclick="showCharacter()">Mostrar Personaje</button>
+            <button class="test-button" onclick="hideCharacter()">Ocultar Personaje</button>
+            <button class="test-button" onclick="testIdle()">Idle</button>
+            <button class="test-button" onclick="testCelebrating()">Celebrating</button>
+            <button class="test-button" onclick="testThinking()">Thinking</button>
+            <button class="test-button" onclick="testSad()">Sad</button>
+            <button class="test-button" onclick="testCheering()">Cheering</button>
+            <button class="test-button" onclick="testSpeech()">Hablar</button>
+            <button class="test-button" onclick="testJavaScript()">JavaScript Robot</button>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h3>Estado del Sistema:</h3>
+            <p id="status">Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Contenedor del Sistema de Personajes -->
+    <div id="character-container" class="character-container" style="display: none;">
+        <img id="character-sprite" src="assets/characters/mascot/idle.svg" alt="Personaje mascota">
+        <div id="speech-bubble" class="speech-bubble" style="display: none;">
+            <p id="speech-text"></p>
+        </div>
+    </div>
+
+    <!-- Contenedor de Efectos de Celebración -->
+    <div id="celebration-effects" class="effects-overlay" style="display: none;">
+        <img id="celebration-gif" src="" alt="Efecto de celebración">
+    </div>
+
+    <script src="assets/js/characters.js"></script>
+    <script>
+        function updateStatus() {
+            const status = document.getElementById('status');
+            if (window.characterManager) {
+                status.innerHTML = `
+                    ✅ CharacterManager inicializado<br>
+                    Container: ${window.characterManager.characterContainer ? '✅' : '❌'}<br>
+                    Sprite: ${window.characterManager.characterSprite ? '✅' : '❌'}<br>
+                    Speech: ${window.characterManager.speechBubble ? '✅' : '❌'}
+                `;
+            } else {
+                status.textContent = '❌ CharacterManager no encontrado';
+            }
+        }
+
+        function showCharacter() {
+            if (window.characterManager) {
+                window.characterManager.show();
+                updateStatus();
+            }
+        }
+
+        function hideCharacter() {
+            if (window.characterManager) {
+                window.characterManager.hide();
+            }
+        }
+
+        function testIdle() {
+            if (window.characterManager) {
+                window.characterManager.changeExpression('idle');
+            }
+        }
+
+        function testCelebrating() {
+            if (window.characterManager) {
+                window.characterManager.changeExpression('celebrating');
+            }
+        }
+
+        function testThinking() {
+            if (window.characterManager) {
+                window.characterManager.changeExpression('thinking');
+            }
+        }
+
+        function testSad() {
+            if (window.characterManager) {
+                window.characterManager.changeExpression('sad');
+            }
+        }
+
+        function testCheering() {
+            if (window.characterManager) {
+                window.characterManager.changeExpression('cheering');
+            }
+        }
+
+        function testSpeech() {
+            if (window.characterManager) {
+                window.characterManager.speak('¡Hola! Este es un mensaje de prueba del sistema de personajes.');
+            }
+        }
+
+        function testJavaScript() {
+            if (window.characterManager) {
+                window.characterManager.showLanguageCharacter('javascript');
+            }
+        }
+
+        // Actualizar estado cada segundo
+        setInterval(updateStatus, 1000);
+        
+        // Inicial
+        setTimeout(updateStatus, 500);
+    </script>
+</body>
+</html>

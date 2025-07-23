@@ -1,0 +1,332 @@
+/* Estilos para el Sistema de Personajes */
+
+/* Contenedor principal del personaje */
+.character-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+/* Sprite del personaje */
+#character-sprite {
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    transition: all 0.2s ease;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+#character-sprite:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+}
+
+#character-sprite:active {
+    transform: scale(0.95);
+}
+
+/* Burbuja de diálogo */
+.speech-bubble {
+    position: absolute;
+    bottom: 130px;
+    right: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #667eea;
+    border-radius: 15px;
+    padding: 12px 16px;
+    max-width: 220px;
+    min-width: 150px;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+    animation: speechAppear 0.3s ease-out;
+}
+
+@keyframes speechAppear {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.speech-bubble p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.4;
+    text-align: center;
+}
+
+/* Flecha de la burbuja */
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    right: 30px;
+    border: 12px solid transparent;
+    border-top-color: #667eea;
+}
+
+.speech-bubble:before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 32px;
+    border: 10px solid transparent;
+    border-top-color: #ffffff;
+}
+
+/* Efectos de celebración */
+.effects-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: effectsAppear 0.5s ease-out;
+}
+
+@keyframes effectsAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#celebration-gif {
+    max-width: 400px;
+    max-height: 400px;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+    animation: celebrationBounce 0.6s ease-out;
+}
+
+@keyframes celebrationBounce {
+    0% {
+        transform: scale(0) rotate(-180deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(-90deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Animaciones de entrada */
+.character-container.entering {
+    animation: characterEnter 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes characterEnter {
+    from {
+        transform: translateY(100px) scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Estados del personaje */
+.character-container.celebrating #character-sprite {
+    animation: characterCelebrate 1s ease-in-out infinite;
+}
+
+@keyframes characterCelebrate {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
+.character-container.thinking #character-sprite {
+    animation: characterThink 2s ease-in-out infinite;
+}
+
+@keyframes characterThink {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.character-container.sad #character-sprite {
+    animation: characterSad 1s ease-in-out;
+    filter: grayscale(30%) drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+
+@keyframes characterSad {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Efectos de hover mejorados */
+.character-container:hover .speech-bubble {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .character-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    #character-sprite {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .speech-bubble {
+        bottom: 100px;
+        right: -10px;
+        max-width: 180px;
+        padding: 10px 12px;
+    }
+    
+    .speech-bubble p {
+        font-size: 12px;
+    }
+    
+    #celebration-gif {
+        max-width: 280px;
+        max-height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .character-container {
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    #character-sprite {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .speech-bubble {
+        bottom: 80px;
+        right: -20px;
+        max-width: 150px;
+        padding: 8px 10px;
+    }
+    
+    .speech-bubble p {
+        font-size: 11px;
+    }
+    
+    #celebration-gif {
+        max-width: 200px;
+        max-height: 200px;
+    }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .speech-bubble {
+        background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+        border-color: #667eea;
+        color: white;
+    }
+    
+    .speech-bubble p {
+        color: #e2e8f0;
+    }
+    
+    .speech-bubble:before {
+        border-top-color: #2d3748;
+    }
+}
+
+/* Efectos especiales para diferentes tipos de celebración */
+.effect-confetti {
+    background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+}
+
+.effect-fireworks {
+    background: radial-gradient(circle, rgba(255,69,0,0.2) 0%, transparent 70%);
+}
+
+.effect-sparkles {
+    background: radial-gradient(circle, rgba(138,43,226,0.2) 0%, transparent 70%);
+}
+
+/* Animación de latido para llamar la atención */
+.character-container.attention #character-sprite {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.1);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.1);
+    }
+    70% {
+        transform: scale(1);
+    }
+}
+
+/* Efectos de partículas (si se agregan en el futuro) */
+.particle-effect {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #667eea;
+    border-radius: 50%;
+    animation: particleFloat 3s ease-out infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(0);
+    }
+}

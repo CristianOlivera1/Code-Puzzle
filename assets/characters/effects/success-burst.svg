@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <defs>
+    <!-- Gradientes para los colores del burst -->
+    <radialGradient id="starGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0.6" />
+    </radialGradient>
+    
+    <radialGradient id="sparkleGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFD700;stop-opacity:0.7" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:0.3" />
+    </radialGradient>
+    
+    <radialGradient id="centerGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.9" />
+      <stop offset="30%" style="stop-color:#FFD700;stop-opacity:0.8" />
+      <stop offset="70%" style="stop-color:#FFA500;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0.4" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Rayos de luz de fondo -->
+  <g transform="translate(200,200)">
+    <!-- Rayos principales -->
+    <g>
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 0 0" to="360 0 0" dur="4s" repeatCount="indefinite"/>
+      
+      <!-- Rayos largos -->
+      <path d="M0,-180 L8,-120 L0,-60 L-8,-120 Z" fill="url(#starGradient)" opacity="0.6">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/>
+      </path>
+      <path d="M127,-127 L135,-85 L93,-77 L85,-119 Z" fill="url(#starGradient)" opacity="0.5">
+        <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M180,0 L120,8 L60,0 L120,-8 Z" fill="url(#starGradient)" opacity="0.6">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M127,127 L85,135 L77,93 L119,85 Z" fill="url(#starGradient)" opacity="0.5">
+        <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.2s" repeatCount="indefinite"/>
+      </path>
+      <path d="M0,180 L-8,120 L0,60 L8,120 Z" fill="url(#starGradient)" opacity="0.6">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.3s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-127,127 L-135,85 L-93,77 L-85,119 Z" fill="url(#starGradient)" opacity="0.5">
+        <animate attributeName="opacity" values="0.2;0.7;0.2" dur="1.9s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-180,0 L-120,-8 L-60,0 L-120,8 Z" fill="url(#starGradient)" opacity="0.6">
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.1s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-127,-127 L-85,-135 L-77,-93 L-119,-85 Z" fill="url(#starGradient)" opacity="0.5">
+        <animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.4s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    
+    <!-- Rayos secundarios -->
+    <g>
+      <animateTransform attributeName="transform" attributeType="XML" type="rotate" from="22.5 0 0" to="382.5 0 0" dur="3s" repeatCount="indefinite"/>
+      
+      <path d="M0,-140 L4,-100 L0,-60 L-4,-100 Z" fill="url(#sparkleGradient)" opacity="0.4">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.5s" repeatCount="indefinite"/>
+      </path>
+      <path d="M99,-99 L103,-71 L75,-67 L71,-95 Z" fill="url(#sparkleGradient)" opacity="0.3">
+        <animate attributeName="opacity" values="0.1;0.5;0.1" dur="1.7s" repeatCount="indefinite"/>
+      </path>
+      <path d="M140,0 L100,4 L60,0 L100,-4 Z" fill="url(#sparkleGradient)" opacity="0.4">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.6s" repeatCount="indefinite"/>
+      </path>
+      <path d="M99,99 L71,103 L67,75 L95,71 Z" fill="url(#sparkleGradient)" opacity="0.3">
+        <animate attributeName="opacity" values="0.1;0.5;0.1" dur="1.8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M0,140 L-4,100 L0,60 L4,100 Z" fill="url(#sparkleGradient)" opacity="0.4">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.4s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-99,99 L-103,71 L-75,67 L-71,95 Z" fill="url(#sparkleGradient)" opacity="0.3">
+        <animate attributeName="opacity" values="0.1;0.5;0.1" dur="1.9s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-140,0 L-100,-4 L-60,0 L-100,4 Z" fill="url(#sparkleGradient)" opacity="0.4">
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.3s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-99,-99 L-71,-103 L-67,-75 L-95,-71 Z" fill="url(#sparkleGradient)" opacity="0.3">
+        <animate attributeName="opacity" values="0.1;0.5;0.1" dur="2.0s" repeatCount="indefinite"/>
+      </path>
+    </g>
+  </g>
+  
+  <!-- Partículas brillantes -->
+  <g>
+    <!-- Estrellas pequeñas -->
+    <circle cx="80" cy="80" r="3" fill="url(#sparkleGradient)">
+      <animate attributeName="r" values="1;4;1" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="320" cy="120" r="2" fill="url(#sparkleGradient)">
+      <animate attributeName="r" values="0.5;3;0.5" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="100" cy="300" r="2.5" fill="url(#sparkleGradient)">
+      <animate attributeName="r" values="1;3.5;1" dur="1.8s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.9;0.4" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="300" cy="300" r="2" fill="url(#sparkleGradient)">
+      <animate attributeName="r" values="0.8;3.2;0.8" dur="1.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="60" cy="200" r="1.5" fill="url(#sparkleGradient)">
+      <animate attributeName="r" values="0.5;2.5;0.5" dur="2.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="340" cy="250" r="2.8" fill="url(#sparkleGradient)">
+      <animate attributeName="r" values="1.2;3.8;1.2" dur="1.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.8;0.4" dur="1.4s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Estallido central -->
+  <g transform="translate(200,200)">
+    <!-- Círculo central brillante -->
+    <circle cx="0" cy="0" r="40" fill="url(#centerGradient)">
+      <animate attributeName="r" values="20;50;20" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Anillo pulsante -->
+    <circle cx="0" cy="0" r="60" fill="none" stroke="url(#starGradient)" stroke-width="3" opacity="0.6">
+      <animate attributeName="r" values="40;80;40" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0.2;0.8" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-width" values="3;1;3" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Segundo anillo */
+    <circle cx="0" cy="0" r="80" fill="none" stroke="url(#sparkleGradient)" stroke-width="2" opacity="0.4">
+      <animate attributeName="r" values="60;100;60" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="stroke-width" values="2;0.5;2" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Texto SUCCESS (opcional, puede ser removido si se usa desde JavaScript) -->
+  <text x="200" y="200" text-anchor="middle" dominant-baseline="middle" 
+        font-family="Arial, sans-serif" font-size="24" font-weight="bold" 
+        fill="url(#starGradient)" opacity="0.8">
+    SUCCESS!
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" attributeType="XML" type="scale" 
+                      values="0.8 0.8;1.2 1.2;0.8 0.8" dur="2s" repeatCount="indefinite"/>
+  </text>
+</svg>

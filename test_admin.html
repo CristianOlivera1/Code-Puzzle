@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Admin API</title>
+</head>
+<body>
+    <h1>Pruebas de API del Admin</h1>
+    <div id="results"></div>
+    
+    <script>
+    async function testAPI() {
+        const resultsDiv = document.getElementById('results');
+        
+        try {
+            console.log('Probando dashboard_stats...');
+            const dashboardResponse = await fetch('php/controllers/admin.php?action=dashboard_stats');
+            const dashboardData = await dashboardResponse.json();
+            
+            resultsDiv.innerHTML += '<h3>Dashboard Stats:</h3>';
+            resultsDiv.innerHTML += '<pre>' + JSON.stringify(dashboardData, null, 2) + '</pre>';
+            
+            console.log('Probando recent_activity...');
+            const activityResponse = await fetch('php/controllers/admin.php?action=recent_activity');
+            const activityData = await activityResponse.json();
+            
+            resultsDiv.innerHTML += '<h3>Recent Activity:</h3>';
+            resultsDiv.innerHTML += '<pre>' + JSON.stringify(activityData, null, 2) + '</pre>';
+            
+            console.log('Probando estadisticas_generales...');
+            const statsResponse = await fetch('php/controllers/admin.php?action=estadisticas_generales');
+            const statsData = await statsResponse.json();
+            
+            resultsDiv.innerHTML += '<h3>Estadísticas Generales:</h3>';
+            resultsDiv.innerHTML += '<pre>' + JSON.stringify(statsData, null, 2) + '</pre>';
+            
+        } catch (error) {
+            resultsDiv.innerHTML += '<h3>Error:</h3>';
+            resultsDiv.innerHTML += '<pre>' + error.message + '</pre>';
+            console.error('Error:', error);
+        }
+    }
+    
+    // Ejecutar al cargar la página
+    testAPI();
+    </script>
+</body>
+</html>

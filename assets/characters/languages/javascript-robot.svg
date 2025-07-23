@@ -1,0 +1,42 @@
+<!-- Robot JavaScript animado -->
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="jsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#F7DF1E;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#F0D000;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Cuerpo cuadrado (como logo JS) -->
+    <rect x="30" y="50" width="40" height="35" rx="5" fill="url(#jsGrad)"/>
+    
+    <!-- Cabeza -->
+    <rect x="35" y="25" width="30" height="30" rx="8" fill="url(#jsGrad)"/>
+    
+    <!-- Ojos -->
+    <circle cx="42" cy="35" r="3" fill="black"/>
+    <circle cx="58" cy="35" r="3" fill="black"/>
+    
+    <!-- Sonrisa -->
+    <path d="M 40 45 Q 50 50 60 45" stroke="black" stroke-width="2" fill="none"/>
+    
+    <!-- Brazos mecánicos -->
+    <rect x="20" y="60" width="8" height="15" rx="4" fill="#666"/>
+    <rect x="72" y="60" width="8" height="15" rx="4" fill="#666"/>
+    
+    <!-- Logo JS en el pecho -->
+    <text x="50" y="70" font-family="Arial Black" font-size="12" text-anchor="middle" fill="black">JS</text>
+    
+    <!-- Antenas con luces -->
+    <line x1="45" y1="25" x2="45" y2="15" stroke="#666" stroke-width="2"/>
+    <line x1="55" y1="25" x2="55" y2="15" stroke="#666" stroke-width="2"/>
+    <circle cx="45" cy="15" r="2" fill="#00FF00">
+        <animate attributeName="fill" values="#00FF00;#FFFF00;#00FF00" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="55" cy="15" r="2" fill="#FF0000">
+        <animate attributeName="fill" values="#FF0000;#FFFF00;#FF0000" dur="1s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    
+    <!-- Animación de flotación -->
+    <animateTransform attributeName="transform" type="translate" values="0,0;0,-3;0,0" dur="2s" repeatCount="indefinite"/>
+</svg>

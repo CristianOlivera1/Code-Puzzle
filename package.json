@@ -1,0 +1,15 @@
+{
+  "name": "puzzle",
+  "version": "1.0.0",
+  "description": "Armado de codigo",
+  "main": "index.js",
+  "scripts": {
+    "build:styles": "npx @tailwindcss/cli -i ./input.css -o ./assets/output.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  }
+}

@@ -1,0 +1,38 @@
+<!-- Placeholder GIF animado para celebrating -->
+<svg width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#8BC34A;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Cuerpo -->
+    <ellipse cx="60" cy="80" rx="35" ry="25" fill="url(#grad2)"/>
+    
+    <!-- Cabeza -->
+    <circle cx="60" cy="45" r="25" fill="url(#grad2)"/>
+    
+    <!-- Ojos brillantes -->
+    <circle cx="50" cy="40" r="5" fill="white"/>
+    <circle cx="70" cy="40" r="5" fill="white"/>
+    <circle cx="51" cy="39" r="3" fill="black"/>
+    <circle cx="71" cy="39" r="3" fill="black"/>
+    
+    <!-- Sonrisa grande -->
+    <path d="M 42 52 Q 60 67 78 52" stroke="white" stroke-width="3" fill="none"/>
+    
+    <!-- Brazos arriba celebrando -->
+    <ellipse cx="25" cy="60" rx="8" ry="18" fill="url(#grad2)" transform="rotate(-30 25 60)"/>
+    <ellipse cx="95" cy="60" rx="8" ry="18" fill="url(#grad2)" transform="rotate(30 95 60)"/>
+    
+    <!-- Estrellas de celebración -->
+    <text x="30" y="25" font-family="Arial" font-size="16" fill="#FFD700">★</text>
+    <text x="85" y="30" font-family="Arial" font-size="12" fill="#FFD700">★</text>
+    <text x="20" y="50" font-family="Arial" font-size="10" fill="#FFD700">★</text>
+    
+    <!-- Texto -->
+    <text x="60" y="115" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#4CAF50">¡Genial!</text>
+    
+    <animateTransform attributeName="transform" type="scale" values="1;1.1;1;1.1;1" dur="1s" repeatCount="indefinite"/>
+</svg>

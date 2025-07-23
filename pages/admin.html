@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Puzzle Code</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+                <div class="admin-info">
+                    <span id="admin-name">Administrador</span>
+                    <button id="admin-logout" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-sign-out-alt"></i> Salir
+                    </button>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#usuarios" class="nav-link" data-section="usuarios">
+                            <i class="fas fa-users"></i> Usuarios
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#lenguajes" class="nav-link" data-section="lenguajes">
+                            <i class="fas fa-code"></i> Lenguajes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#niveles" class="nav-link" data-section="niveles">
+                            <i class="fas fa-puzzle-piece"></i> Niveles
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#estadisticas" class="nav-link" data-section="estadisticas">
+                            <i class="fas fa-chart-bar"></i> Estadísticas
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h1>Dashboard</h1>
+                    <p>Resumen general del sistema</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-usuarios">0</h3>
+                            <p>Usuarios Registrados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-lenguajes">0</h3>
+                            <p>Lenguajes Disponibles</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-puzzle-piece"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-niveles">0</h3>
+                            <p>Niveles Creados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="usuarios-activos">0</h3>
+                            <p>Usuarios Activos Hoy</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="recent-activity">
+                        <h3><i class="fas fa-history"></i> Actividad Reciente</h3>
+                        <div id="recent-activity-list" class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: linear-gradient(45deg, #3498db, #2980b9);">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-info">
+                                    <p>Nuevo usuario registrado</p>
+                                    <small>Hace 2 horas</small>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: linear-gradient(45deg, #27ae60, #229954);">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-info">
+                                    <p>Nivel completado por usuario</p>
+                                    <small>Hace 4 horas</small>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon" style="background: linear-gradient(45deg, #f39c12, #e67e22);">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="activity-info">
+                                    <p>Nuevo lenguaje agregado</p>
+                                    <small>Hace 1 día</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <h3><i class="fas fa-bolt"></i> Acciones Rápidas</h3>
+                        <div class="action-buttons-grid">
+                            <button class="action-btn" onclick="AdminApp.showUsuarioModal()">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Crear Usuario</span>
+                            </button>
+                            <button class="action-btn" onclick="AdminApp.showLenguajeModal()">
+                                <i class="fas fa-code"></i>
+                                <span>Nuevo Lenguaje</span>
+                            </button>
+                            <button class="action-btn" onclick="AdminApp.showNivelModal()">
+                                <i class="fas fa-puzzle-piece"></i>
+                                <span>Crear Nivel</span>
+                            </button>
+                            <button class="action-btn" onclick="AdminApp.showSection('estadisticas')">
+                                <i class="fas fa-chart-bar"></i>
+                                <span>Ver Estadísticas</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Usuarios Section -->
+            <section id="usuarios-section" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Usuarios</h1>
+                    <button id="crear-usuario-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Usuario
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuario</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarios-tabla">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Lenguajes Section -->
+            <section id="lenguajes-section" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Lenguajes</h1>
+                    <button id="crear-lenguaje-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Lenguaje
+                    </button>
+                </div>
+                
+                <div class="languages-grid">
+                    <div id="lenguajes-grid">
+                        <!-- Se llenará dinámicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Niveles Section -->
+            <section id="niveles-section" class="content-section">
+                <div class="section-header">
+                    <h1>Gestión de Niveles</h1>
+                    <div class="section-controls">
+                        <select id="filtro-lenguaje" class="form-select">
+                            <option value="">Todos los lenguajes</option>
+                        </select>
+                        <button id="crear-nivel-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Nuevo Nivel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Lenguaje</th>
+                                <th>Tiempo Límite</th>
+                                <th>Estado</th>
+                                <th>Completados</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="niveles-tabla">
+                            <!-- Se llenará dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Estadísticas Section -->
+            <section id="estadisticas-section" class="content-section">
+                <div class="section-header">
+                    <h1>Estadísticas Avanzadas</h1>
+                    <p>Análisis detallado de rendimiento y actividad</p>
+                </div>
+                
+                <div class="stats-overview">
+                    <div class="stat-card overview-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-completados-stat">0</h3>
+                            <p>Niveles Completados</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card overview-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="promedio-estrellas-stat">0</h3>
+                            <p>Promedio de Estrellas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card overview-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="tiempo-promedio-stat">0s</h3>
+                            <p>Tiempo Promedio</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card overview-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="tasa-completado-stat">0%</h3>
+                            <p>Tasa de Finalización</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-content">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-fire"></i> Niveles más Populares</h3>
+                            <span class="chart-subtitle">Ranking de niveles más jugados</span>
+                        </div>
+                        <div id="chart-niveles" class="chart-content">
+                            <div class="loading-chart">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Cargando datos...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-line"></i> Progreso por Lenguaje</h3>
+                            <span class="chart-subtitle">Completados por tecnología</span>
+                        </div>
+                        <div id="chart-lenguajes" class="chart-content">
+                            <div class="loading-chart">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Cargando datos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-detailed">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-users"></i> Rendimiento de Usuarios</h3>
+                            <span class="chart-subtitle">Top usuarios por niveles completados</span>
+                        </div>
+                        <div id="chart-usuarios" class="chart-content">
+                            <div class="loading-chart">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Cargando datos...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Actividad Semanal</h3>
+                            <span class="chart-subtitle">Niveles completados por día</span>
+                        </div>
+                        <div id="chart-actividad" class="chart-content">
+                            <div class="loading-chart">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Cargando datos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para Usuario -->
+    <div id="usuario-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="usuario-modal-title">Nuevo Usuario</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="usuario-form">
+                <div class="form-group">
+                    <label for="usuario-nombre">Nombre de Usuario:</label>
+                    <input type="text" id="usuario-nombre" name="nombreUsuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="usuario-correo">Correo Electrónico:</label>
+                    <input type="email" id="usuario-correo" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="usuario-contrasena">Contraseña:</label>
+                    <input type="password" id="usuario-contrasena" name="contrasena">
+                    <small>Dejar vacío para mantener la contraseña actual (solo en edición)</small>
+                </div>
+                <div class="form-group">
+                    <label for="usuario-rol">Rol:</label>
+                    <select id="usuario-rol" name="idRol" required>
+                        <option value="1">Administrador</option>
+                        <option value="2">Jugador</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="usuario-foto">Foto:</label>
+                    <input type="text" id="usuario-foto" name="foto" value="default.png">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('usuario-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Lenguaje -->
+    <div id="lenguaje-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="lenguaje-modal-title">Nuevo Lenguaje</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="lenguaje-form">
+                <div class="form-group">
+                    <label for="lenguaje-nombre">Nombre del Lenguaje:</label>
+                    <input type="text" id="lenguaje-nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="lenguaje-foto">Foto (nombre del archivo):</label>
+                    <input type="text" id="lenguaje-foto" name="foto" required placeholder="ej: javascript.png">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('lenguaje-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Nivel -->
+    <div id="nivel-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="nivel-modal-title">Nuevo Nivel</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="nivel-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nivel-titulo">Título:</label>
+                        <input type="text" id="nivel-titulo" name="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nivel-lenguaje">Lenguaje:</label>
+                        <select id="nivel-lenguaje" name="idLenguaje" required>
+                            <!-- Se llenará dinámicamente -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nivel-tiempo">Tiempo Límite (segundos):</label>
+                        <input type="number" id="nivel-tiempo" name="tiempoLimite" required min="30" max="600">
+                    </div>
+                    <div class="form-group">
+                        <label for="nivel-estado">Estado:</label>
+                        <select id="nivel-estado" name="estado" required>
+                            <option value="0">Desbloqueado</option>
+                            <option value="1">Bloqueado</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nivel-descripcion">Descripción/Ayuda:</label>
+                    <input type="text" id="nivel-descripcion" name="ayudaDescripcion" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nivel-codigo">Código (una línea por entrada):</label>
+                    <textarea id="nivel-codigo" name="codigo" rows="8" required 
+                              placeholder="Escribe cada línea de código en una línea separada. Ejemplo:&#10;function saludar() {&#10;  console.log('Hola Mundo');&#10;}&#10;saludar();"></textarea>
+                    <small>Tip: Escribe el código en el orden correcto. El sistema lo desordenará automáticamente para el jugador.</small>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Guardar Nivel</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('nivel-modal')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/admin.js"></script>
+</body>
+</html>

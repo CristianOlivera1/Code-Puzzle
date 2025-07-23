@@ -1,0 +1,16 @@
+# Seguridad para directorio de uploads
+# Permitir solo imágenes
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Denegar acceso a otros tipos de archivo
+<FilesMatch "\.(?!jpg|jpeg|png|gif|webp$)[^.]+$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Denegar ejecución de scripts
+Options -ExecCGI
+AddHandler cgi-script .php .pl .py .jsp .asp .sh .cgi
