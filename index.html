@@ -18,7 +18,7 @@
             <div class="flex md:flex-1">
                 <a href="/" class="relative -m-1.5 p-1.5 flex gap-2">
                     <img class="size-11" src="assets/images/img/logo.svg" alt="logo">
-                    <h1 class="font-black text-3xl hidden md:flex my-1 text-primary-gradient">
+                    <h1 class="font-black text-3xl md:flex my-1 text-primary-gradient">
                         Code Puzzle
                     </h1>
                 </a>
@@ -37,8 +37,12 @@
                     </div>
                 </div>
                 <div id="auth-buttons">
-                    <button id="login-btn" class="px-1 text-sm sm:text-lg sm:px-2 sm:py-1 rounded mr-0 md:mr-2 hover:text-gray-400 text-white" style="margin-right: 8px;">Iniciar Sesión</button>
-                    <button id="register-btn" class="text-sm sm:text-lg sm:px-2 sm:py-2 md:px-6 md:py-2 rounded-full registro-anim text-white primary-gradient" style="padding: 8px 16px;">Registrarse</button>
+                    <button id="login-btn"
+                        class="px-1 text-sm sm:text-lg sm:px-2 sm:py-1 rounded mr-0 md:mr-2 hover:text-gray-400 text-white"
+                        style="margin-right: 8px;">Iniciar Sesión</button>
+                    <button id="register-btn"
+                        class="text-sm sm:text-lg sm:px-2 sm:py-2 md:px-6 md:py-2 rounded-full registro-anim text-white primary-gradient"
+                        style="padding: 8px 16px;">Registrarse</button>
                 </div>
             </nav>
         </div>
@@ -125,7 +129,8 @@
                             </p>
                         </div>
 
-                        <button id="start-game-btn" class="btn btn-large primary-gradient text-white">Comenzar a Jugar</button>
+                        <button id="start-game-btn" class="btn btn-large primary-gradient text-white">Comenzar a
+                            Jugar</button>
                     </div>
                     <div class="absolute bottom-0 right-70 z-0">
                         <img src="assets/images/img/foco.svg" alt="foco-hand" />
@@ -255,15 +260,18 @@
             <!-- Alert para mensajes -->
             <div id="alert-container" class="fixed top-5 right-5 z-50 hidden">
                 <div id="alert-box" class="flex items-center p-4 rounded-lg shadow-lg w-auto" role="alert">
-                    <svg id="alert-icon" class="shrink-0 size-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M16.707 5.293a1 1 0 0 0-1.414 0L9 11.586 6.707 9.293a1 1 0 0 0-1.414 1.414l3 3a1 1 0 0 0 1.414 0l7-7a1 1 0 0 0 0-1.414Z" />
+                    <svg id="alert-icon" class="shrink-0 size-6 mr-2" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M16.707 5.293a1 1 0 0 0-1.414 0L9 11.586 6.707 9.293a1 1 0 0 0-1.414 1.414l3 3a1 1 0 0 0 1.414 0l7-7a1 1 0 0 0 0-1.414Z" />
                     </svg>
                     <span id="alert-message" class="text-sm font-medium"></span>
                 </div>
             </div>
 
             <!-- Decoración SVG -->
-            <img src="assets/images/img/dots-login-register.svg" alt="Decoración SVG" class="absolute top-0 left-0 w-xl z-0 pointer-events-none" />
+            <img src="assets/images/img/dots-login-register.svg" alt="Decoración SVG"
+                class="absolute top-0 left-0 w-xl z-0 pointer-events-none" />
 
             <div class="grid h-full min-h-screen lg:grid-cols-2">
                 <!-- Panel izquierdo - Formularios -->
@@ -278,15 +286,20 @@
                         <!-- Formulario de Login -->
                         <div id="login-form" class="auth-form w-full">
                             <h2 class="text-xl font-semibold text-white mb-2">Bienvenido nuevamente, jugador!</h2>
-                            <p class="text-gray-400 mb-8">Inicia sesión para liberar la aventura!</p>
+                            <p class="text-gray-300 mb-8">Inicia sesión para liberar la aventura!</p>
 
                             <!-- Botón Google -->
-                            <button type="button" class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
+                            <button type="button"
+                                class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
                                 <svg class="size-6" viewBox="0 0 48 48">
-                                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
-                                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
-                                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
-                                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                    <path fill="#FFC107"
+                                        d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                                    <path fill="#FF3D00"
+                                        d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+                                    <path fill="#4CAF50"
+                                        d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+                                    <path fill="#1976D2"
+                                        d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
                                 </svg>
                                 Continuar con Google
                             </button>
@@ -297,40 +310,50 @@
                                     <span class="w-full border-t border-slate-600"></span>
                                 </div>
                                 <div class="relative flex justify-center text-xs uppercase">
-                                    <span class="bg-black px-3 text-gray-400">O</span>
+                                    <span class="bg-black px-3 text-gray-300">O</span>
                                 </div>
                             </div>
 
                             <!-- Formulario -->
                             <form class="space-y-5 w-full">
                                 <div>
-                                    <input type="email" id="login-email" placeholder="Email" 
-                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                    <input type="email" id="login-email" placeholder="Email"
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent"
                                         required>
                                 </div>
                                 <div class="relative">
-                                    <input type="password" id="login-password" placeholder="Contraseña" 
-                                        class="w-full px-4 py-3 pr-12 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                    <input type="password" id="login-password" placeholder="Contraseña"
+                                        class="w-full px-4 py-3 pr-12 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent"
                                         required>
-                                    <button type="button" id="toggle-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
-                                        <svg id="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                    <button type="button" id="toggle-password"
+                                        style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #d1d5db; background: none; border: none; padding: 0; cursor: pointer;"
+                                        class="hover:text-white transition-colors">
+                                        <svg id="eye-icon" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <path
+                                                    d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4s7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20s-7.028-2.5-8.725-4.704Z" />
+                                                <path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z" />
+                                            </g>
                                         </svg>
                                     </button>
                                 </div>
 
                                 <div class="flex justify-end">
-                                    <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">¿Olvidaste tu contraseña?</a>
+                                    <a href="#"
+                                        class="text-sm text-gray-300 hover:text-white transition-colors">¿Olvidaste tu
+                                        contraseña?</a>
                                 </div>
 
-                                <button type="submit" class="w-full primary-gradient font-bold py-3 px-6 rounded-lg transition-all text-white duration-200 transform hover:scale-105 mt-6">
+                                <button type="submit"
+                                    class="w-full primary-gradient font-bold py-3 px-6 rounded-lg transition-all text-white duration-200 transform hover:scale-105 mt-6">
                                     INICIAR SESIÓN
                                 </button>
                             </form>
 
                             <div class="mt-6 text-center w-full">
-                                <span class="text-gray-400">¿No tienes una cuenta?
-                                    <a href="#" id="show-register" class="text-bold font-semibold text-white hover:underline">Registrarse</a>
+                                <span class="text-gray-300">¿No tienes una cuenta?
+                                    <a href="#" id="show-register"
+                                        class="text-bold font-semibold text-white hover:underline">Registrarse</a>
                                 </span>
                             </div>
                         </div>
@@ -338,15 +361,20 @@
                         <!-- Formulario de Registro -->
                         <div id="register-form" class="auth-form w-full" style="display: none;">
                             <h2 class="text-xl font-semibold text-white mb-2">¡Únete a la aventura!</h2>
-                            <p class="text-gray-400 mb-8">Crea tu cuenta para comenzar a programar</p>
+                            <p class="text-gray-300 mb-8">Crea tu cuenta para comenzar a programar</p>
 
                             <!-- Botón Google -->
-                            <button type="button" class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
+                            <button type="button"
+                                class="w-full mb-6 flex items-center justify-center gap-3 px-4 py-3 border border-slate-600 bg-white rounded-lg text-gray-700 hover:bg-white/90 transition-colors duration-200">
                                 <svg class="size-6" viewBox="0 0 48 48">
-                                    <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
-                                    <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
-                                    <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
-                                    <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                    <path fill="#FFC107"
+                                        d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z" />
+                                    <path fill="#FF3D00"
+                                        d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z" />
+                                    <path fill="#4CAF50"
+                                        d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z" />
+                                    <path fill="#1976D2"
+                                        d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z" />
                                 </svg>
                                 Continuar con Google
                             </button>
@@ -357,53 +385,63 @@
                                     <span class="w-full border-t border-slate-600"></span>
                                 </div>
                                 <div class="relative flex justify-center text-xs uppercase">
-                                    <span class="bg-black px-3 text-gray-400">O</span>
+                                    <span class="bg-black px-3 text-gray-300">O</span>
                                 </div>
                             </div>
 
                             <!-- Formulario -->
                             <form class="space-y-5 w-full">
                                 <div>
-                                    <input type="text" id="register-username" placeholder="Nombre de usuario" 
-                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                    <input type="text" id="register-username" placeholder="Nombre de usuario"
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent"
                                         required>
                                 </div>
                                 <div>
-                                    <input type="email" id="register-email" placeholder="Email" 
-                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                    <input type="email" id="register-email" placeholder="Email"
+                                        class="w-full px-4 py-3 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent"
                                         required>
                                 </div>
                                 <div class="relative">
-                                    <input type="password" id="register-password" placeholder="Contraseña" 
-                                        class="w-full px-4 py-3 pr-12 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent" 
+                                    <input type="password" id="register-password" placeholder="Contraseña"
+                                        class="w-full px-4 py-3 pr-12 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-green focus:border-transparent outline-none transition-colors bg-transparent"
                                         required>
-                                    <button type="button" id="toggle-register-password" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
-                                        <svg id="eye-register-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                    <button type="button" id="toggle-register-password"
+                                        style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #d1d5db; background: none; border: none; padding: 0; cursor: pointer;"
+                                        class="hover:text-white transition-colors">
+                                         <svg id="eye-register-icon" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                            <g fill="none" stroke="currentColor" stroke-width="1.5">
+                                                <path
+                                                    d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4s7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20s-7.028-2.5-8.725-4.704Z" />
+                                                <path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z" />
+                                            </g>
                                         </svg>
                                     </button>
                                 </div>
 
-                                <button type="submit" class="w-full primary-gradient font-bold py-3 px-6 rounded-lg transition-all text-white duration-200 transform hover:scale-105 mt-6">
+                                <button type="submit"
+                                    class="w-full primary-gradient font-bold py-3 px-6 rounded-lg transition-all text-white duration-200 transform hover:scale-105 mt-6">
                                     REGISTRARSE
                                 </button>
                             </form>
 
                             <div class="mt-6 text-center w-full">
-                                <span class="text-gray-400">¿Ya tienes una cuenta?
-                                    <a href="#" id="show-login" class="text-bold font-semibold text-white hover:underline">Inicia sesión</a>
+                                <span class="text-gray-300">¿Ya tienes una cuenta?
+                                    <a href="#" id="show-login"
+                                        class="text-bold font-semibold text-white hover:underline">Inicia sesión</a>
                                 </span>
                             </div>
                         </div>
 
                         <!-- Botón cerrar -->
-                        <button class="close absolute top-4 right-4 text-gray-400 hover:text-white text-2xl z-10">&times;</button>
+                        <button
+                            class="close absolute top-4 right-4 text-gray-400 hover:text-white text-2xl z-10">&times;</button>
                     </div>
                 </div>
 
                 <!-- Panel derecho - Ilustración -->
                 <div class="hidden lg:flex flex-1 bg-gradient-to-br items-center justify-center p-8">
-                    <img src="assets/images/img/dev-login.svg" alt="Login Illustration" class="w-full h-full max-h-screen object-cover rounded-xl shadow-lg">
+                    <img src="assets/images/img/dev-login.svg" alt="Login Illustration"
+                        class="w-full h-full max-h-screen object-cover rounded-xl shadow-lg">
                 </div>
             </div>
         </div>
@@ -443,6 +481,7 @@
     <script src="assets/js/audio.js"></script>
     <script src="assets/js/characters.js"></script>
     <script src="assets/js/animation.js"></script>
+    <script src="assets/js/modal-enhanced.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
 

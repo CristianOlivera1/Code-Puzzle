@@ -1,7 +1,7 @@
 /* Controles de Audio */
 .audio-controls {
     position: fixed;
-    top: 20px;
+    bottom: 300px; /* 120px del sprite + 20px del bottom + 10px de separación */
     right: 20px;
     z-index: 1000;
 }
@@ -12,7 +12,7 @@
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
-    padding: 10px;
+    padding: 5px;
     transition: all 0.3s ease;
 }
 
@@ -25,8 +25,8 @@
     background: linear-gradient(45deg, #667eea, #764ba2);
     border: none;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     color: white;
     font-size: 20px;
     cursor: pointer;
@@ -148,8 +148,8 @@
 /* Responsive */
 @media (max-width: 768px) {
     .audio-controls {
-        top: 10px;
-        right: 10px;
+        bottom: 115px; /* 90px del sprite + 15px del bottom + 10px de separación */
+        right: 15px;
     }
     
     .audio-btn {
@@ -161,5 +161,13 @@
     .volume-controls {
         min-width: 120px;
         top: 50px;
+    }
+}
+
+/* Responsive adicional para móviles muy pequeños */
+@media (max-width: 480px) {
+    .audio-controls {
+        bottom: 90px; /* 70px del sprite + 10px del bottom + 10px de separación */
+        right: 10px;
     }
 }
