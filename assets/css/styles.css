@@ -182,37 +182,62 @@ button{
 
 /* Languages grid */
 .languages-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    padding: 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
 }
 
+
 .language-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
+  position: relative;
+  border-radius: 1rem;
+  background-image: linear-gradient(to right, #160042, #60a5faa4);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  color: white;
+  padding: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  border: 1px dashed rgb(100, 100, 100);
+    transition: box-shadow 0.3s ease;
+
 }
 
 .language-card:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.2);
+box-shadow: 5px 10px 20px rgb(255, 234, 0);
+  border: 1px dashed #ddd;
 }
 
 .language-card img {
+    display: block;
+    margin: 0 auto 1rem auto; /* Centra horizontalmente */
     width: 64px;
     height: 64px;
-    margin-bottom: 1rem;
 }
 
 .language-card h3 {
-    font-size: 1.2rem;
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0;
 }
+.language-card p {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.language-card img {
+  position: absolute;
+  right: 1rem;
+  bottom: -1rem;
+  width: 7rem;
+  height: 7rem;
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
+
 
 /* Levels grid */
 .levels-grid {
