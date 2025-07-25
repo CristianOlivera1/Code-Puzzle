@@ -110,8 +110,30 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('profile-name').textContent = user.nombre;
         document.getElementById('profile-email').textContent = user.correo;
         
+        // También mostrar el nombre en el header
+        const headerUsername = document.getElementById('username');
+        if (headerUsername) {
+            headerUsername.textContent = user.nombre;
+        }
+        
         const avatarImg = document.getElementById('profile-image');
-        avatarImg.src = `../assets/images/${user.foto}`;
+        
+        // Verificar si la foto es una URL externa (UI Avatars o Google) o una imagen local
+        if (user.foto && (user.foto.startsWith('https://ui-avatars.com/') || 
+                         user.foto.startsWith('https://lh3.googleusercontent.com/') ||
+                         user.foto.startsWith('https://') ||
+                         user.foto.startsWith('http://'))) {
+            // Es una URL externa (avatar generado automáticamente o de Google)
+            avatarImg.src = user.foto;
+        } else {
+            // Es una imagen local
+            avatarImg.src = `../assets/images/${user.foto}`;
+        }
+        
+        // Agregar manejo de errores para cargar imagen por defecto si falla
+        avatarImg.onerror = function() {
+            this.src = '../assets/images/default.png';
+        };
     }
 
     function displayUserStats(stats) {
@@ -147,7 +169,18 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.success) {
                 showNotification('Avatar actualizado correctamente', 'success');
-                document.getElementById('profile-image').src = `../assets/images/${data.newAvatar}`;
+                
+                // Actualizar imagen del perfil considerando si es URL externa o archivo local
+                const profileImg = document.getElementById('profile-image');
+                if (data.newAvatar && (data.newAvatar.startsWith('https://ui-avatars.com/') || 
+                                      data.newAvatar.startsWith('https://lh3.googleusercontent.com/') ||
+                                      data.newAvatar.startsWith('https://') ||
+                                      data.newAvatar.startsWith('http://'))) {
+                    profileImg.src = data.newAvatar;
+                } else {
+                    profileImg.src = `../assets/images/${data.newAvatar}`;
+                }
+                
                 document.getElementById('avatar-modal').style.display = 'none';
                 currentUser.foto = data.newAvatar;
             } else {
@@ -226,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'language-progress-card';
             card.innerHTML = `
                 <div class="language-icon">
-                    <img src="../assets/images/${language.fotoLenguaje}" alt="${language.nombreLenguaje}">
+                    <img src="../assets/images/${language.fotoLenguaje}.svg" alt="${language.nombreLenguaje}">
                 </div>
                 <div class="language-info">
                     <h4>${language.nombreLenguaje}</h4>
@@ -476,7 +509,7 @@ const styles = `
 }
 
 .language-progress-card, .achievement-card {
-    background: white;
+    background: radial-gradient(ellipse, #891bab88 0, #160042 400px);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
@@ -518,7 +551,7 @@ const styles = `
     display: flex;
     gap: 15px;
     font-size: 14px;
-    color: #666;
+    color: white;
 }
 
 .achievement-card {

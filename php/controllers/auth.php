@@ -69,7 +69,7 @@ function register() {
     $nombreUsuario = $_POST['nombreUsuario'] ?? '';
     $correo = $_POST['correo'] ?? '';
     $contrasena = $_POST['contrasena'] ?? '';
-    $foto = $_POST['foto'] ?? 'default.png';
+    $foto = $_POST['foto'] ?? ''; // Dejar vacío para generar automáticamente
     
     if (empty($nombreUsuario) || empty($correo) || empty($contrasena)) {
         echo json_encode(['error' => 'Todos los campos son requeridos']);
@@ -79,7 +79,7 @@ function register() {
     $usuario->nombreUsuario = $nombreUsuario;
     $usuario->correo = $correo;
     $usuario->contrasena = $contrasena;
-    $usuario->foto = $foto;
+    $usuario->foto = $foto; // Se generará automáticamente en el modelo
     $usuario->idRol = 2; // Rol de jugador por defecto
     
     if ($usuario->crear()) {

@@ -223,7 +223,7 @@
                     <button id="back-to-languages" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> Volver
                     </button>
-                    <h2 id="language-title"></h2>
+                    <h2 id="language-title" class="text-gray-300 text-xl" style="margin-top: 2em;"></h2>
                 </div>
                 <div id="levels-grid" class="levels-grid">
                     <!-- Se llenarán dinámicamente -->
@@ -301,6 +301,7 @@
                 </div>
             </div>
         </section>
+
     </main>
 
     <!-- Modal de autenticación -->
@@ -499,15 +500,43 @@
     <!-- Modal de resultado -->
     <div id="result-modal" class="modal">
         <div class="modal-content">
-            <div class="result-content">
-                <div id="result-icon"></div>
-                <h3 id="result-title"></h3>
-                <p id="result-message"></p>
-                <div id="result-stars" class="stars-result"></div>
-                <div class="result-actions">
-                    <button id="next-level" class="btn btn-primary" style="display: none;">Siguiente Nivel</button>
-                    <button id="retry-level" class="btn btn-secondary">Intentar de Nuevo</button>
-                    <button id="back-to-menu" class="btn btn-secondary">Volver al Menú</button>
+            <div id="result-content" class="result-content">
+                <div class="result-background" id="result-background"></div>
+                <div class="result-info">
+                    <div class="result-top">
+                        <div class="flex gap-2">
+                            <div id="result-icon"></div>
+                            <h3 id="result-title" style="color: white; font: 800;"></h3>
+                        </div>
+                        <div class="flex gap-2">
+
+                        <p id="result-message" style="color: whitesmoke;"></p>
+                        <div id="result-stars" class="stars-result"></div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="result-bottom">
+                        <!-- Información adicional -->
+                        <div class="result-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Tiempo: </span>
+                                <span id="result-time" class="stat-value">00:00</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Errores: </span>
+                                <span id="result-errors" class="stat-value">0/3</span>
+                            </div>
+                        </div>
+
+                        <div class="result-actions">
+                            <button id="retry-level" class="btn btn-secondary">Intentar de Nuevo</button>
+                            <button id="back-to-menu" class="btn btn-secondary">Volver al Menú</button>
+                            <button id="next-level" class="btn btn-primary" style="display: none;">Siguiente Nivel</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

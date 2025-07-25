@@ -29,7 +29,14 @@ class Usuario {
         $this->nombreUsuario = htmlspecialchars(strip_tags($this->nombreUsuario));
         $this->correo = htmlspecialchars(strip_tags($this->correo));
         $this->contrasena = password_hash($this->contrasena, PASSWORD_DEFAULT);
-        $this->foto = htmlspecialchars(strip_tags($this->foto));
+        
+        // Generar avatar automático si no se proporciona una foto
+        if (empty($this->foto) || $this->foto === 'default.png') {
+            $this->foto = $this->generarAvatarAutomatico($this->nombreUsuario);
+        } else {
+            $this->foto = htmlspecialchars(strip_tags($this->foto));
+        }
+        
         $this->idRol = htmlspecialchars(strip_tags($this->idRol));
         
         // Bind parameters
@@ -145,6 +152,47 @@ class Usuario {
         $stmt->bindParam(':idUsuario', $idUsuario);
         
         return $stmt->execute();
+    }
+
+    // Generar avatar automático usando UI Avatars API
+    private function generarAvatarAutomatico($nombreUsuario) {
+        // Limpiar el nombre para la URL
+        $nombreLimpio = urlencode($nombreUsuario);
+        
+        // Array de colores atractivos para los fondos
+        $coloresFondo = [
+            '4F46E5', // Índigo
+            '7C3AED', // Violeta
+            'EC4899', // Rosa
+            'EF4444', // Rojo
+            'F59E0B', // Ámbar
+            '10B981', // Esmeralda
+            '3B82F6', // Azul
+            '8B5CF6', // Púrpura
+            'F97316', // Naranja
+            '06B6D4'  // Cian
+        ];
+        
+        // Seleccionar color basado en el hash del nombre de usuario
+        $hashIndex = abs(crc32($nombreUsuario)) % count($coloresFondo);
+        $colorFondo = $coloresFondo[$hashIndex];
+        
+        // Configuración del avatar
+        $parametros = [
+            'name' => $nombreLimpio,
+            'size' => '200',
+            'background' => $colorFondo,
+            'color' => 'ffffff', // Texto blanco
+            'format' => 'png',
+            'rounded' => 'true',
+            'bold' => 'true',
+            'font-size' => '0.5' // Tamaño de fuente relativo
+        ];
+        
+        // Construir URL
+        $avatarUrl = 'https://ui-avatars.com/api/?' . http_build_query($parametros);
+        
+        return $avatarUrl;
     }
 }
 ?>

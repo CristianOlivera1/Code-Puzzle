@@ -248,6 +248,9 @@ const App = {
         if (modal) {
             modal.classList.remove('hidden');
             modal.style.display = 'block';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
         }
     },
 
@@ -255,8 +258,10 @@ const App = {
     hideAuthModal() {
         const modal = document.getElementById('auth-modal');
         if (modal) {
-            modal.classList.add('hidden');
-            modal.style.display = 'none';
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
     },
 
@@ -308,8 +313,36 @@ const App = {
             const data = await response.json();
 
             if (data.success) {
-                this.showNotification('¡Registro exitoso! Ahora puedes iniciar sesión.', 'success');
-                this.showAuthModal('login');
+                this.showNotification('¡Registro exitoso! Iniciando sesión...', 'success');
+                
+                // Hacer login automático después del registro
+                setTimeout(async () => {
+                    try {
+                        const loginResponse = await fetch('php/controllers/auth.php?action=login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `correo=${encodeURIComponent(email)}&contrasena=${encodeURIComponent(password)}`
+                        });
+
+                        const loginData = await loginResponse.json();
+
+                        if (loginData.success) {
+                            this.currentUser = loginData.usuario;
+                            localStorage.setItem('puzzleCodeUser', JSON.stringify(loginData.usuario));
+                            this.updateUI();
+                            this.hideAuthModal();
+                            this.showNotification(`¡Bienvenido ${loginData.usuario.nombre}! Tu avatar se ha generado automáticamente.`, 'success');
+                        } else {
+                            this.showNotification('Registro exitoso. Por favor, inicia sesión manualmente.', 'info');
+                            this.showAuthModal('login');
+                        }
+                    } catch (error) {
+                        this.showNotification('Registro exitoso. Por favor, inicia sesión manualmente.', 'info');
+                        this.showAuthModal('login');
+                    }
+                }, 1000);
             } else {
                 this.showNotification(data.error, 'error');
             }
@@ -505,17 +538,30 @@ const App = {
 
             // Actualizar avatares
             if (this.currentUser.foto && this.currentUser.foto !== '') {
+                // Determinar si es URL externa o archivo local
+                const isExternalUrl = this.currentUser.foto.startsWith('https://') || 
+                                    this.currentUser.foto.startsWith('http://');
+                const avatarSrc = isExternalUrl 
+                    ? this.currentUser.foto 
+                    : `assets/images/${this.currentUser.foto}`;
+                
                 // Mostrar imagen de avatar
                 if (userAvatar) {
-                    userAvatar.src = this.currentUser.foto;
+                    userAvatar.src = avatarSrc;
                     userAvatar.style.display = 'block';
+                    userAvatar.onerror = function() {
+                        this.src = 'assets/images/default.png';
+                    };
                 }
                 if (userAvatarPlaceholder) {
                     userAvatarPlaceholder.style.display = 'none';
                 }
                 if (dropdownAvatar) {
-                    dropdownAvatar.src = this.currentUser.foto;
+                    dropdownAvatar.src = avatarSrc;
                     dropdownAvatar.style.display = 'block';
+                    dropdownAvatar.onerror = function() {
+                        this.src = 'assets/images/default.png';
+                    };
                 }
                 if (dropdownAvatarPlaceholder) {
                     dropdownAvatarPlaceholder.style.display = 'none';
@@ -593,6 +639,30 @@ const App = {
         console.log('- dropdown-email:', document.getElementById('dropdown-email')?.textContent);
         console.log('==============================');
     },
+    
+    // Función para debug del progreso
+    async debugProgreso() {
+        if (!this.currentUser) {
+            console.log('No hay usuario logueado');
+            return;
+        }
+        
+        try {
+            const response = await fetch('php/controllers/game.php?action=obtener_progreso');
+            const data = await response.json();
+            console.log('=== DEBUG PROGRESO USUARIO ===');
+            console.log('Respuesta completa:', data);
+            if (data.progreso) {
+                console.log('Progreso por nivel:');
+                data.progreso.forEach(prog => {
+                    console.log(`Nivel ${prog.idNivel}: ${prog.estrellas} estrellas, ${prog.tiempoSegundos}s`);
+                });
+            }
+            console.log('=============================');
+        } catch (error) {
+            console.error('Error al obtener progreso:', error);
+        }
+    },
 
     // Cargar lenguajes
     async loadLanguages() {
@@ -660,12 +730,34 @@ const App = {
         }
 
         try {
+            // Obtener niveles del lenguaje
             const response = await fetch(`php/controllers/game.php?action=obtener_niveles&idLenguaje=${language.id}`);
             const data = await response.json();
 
             if (data.niveles) {
                 this.currentLevels = data.niveles; // Almacenar todos los niveles
-                this.renderLevels(data.niveles);
+                
+                // Obtener progreso del usuario si está logueado
+                let userProgress = {};
+                if (this.currentUser) {
+                    try {
+                        const progressResponse = await fetch('php/controllers/game.php?action=obtener_progreso');
+                        const progressData = await progressResponse.json();
+                        
+                        console.log('Progreso obtenido:', progressData);
+                        
+                        if (progressData.progreso) {
+                            // Crear un mapa de progreso por idNivel
+                            progressData.progreso.forEach(prog => {
+                                userProgress[prog.idNivel] = prog.estrellas;
+                            });
+                        }
+                    } catch (error) {
+                        console.log('Error al obtener progreso (no crítico):', error);
+                    }
+                }
+                
+                this.renderLevels(data.niveles, userProgress);
                 this.showScreen('level-screen');
             }
         } catch (error) {
@@ -674,7 +766,7 @@ const App = {
     },
 
     // Renderizar niveles
-    renderLevels(niveles) {
+    renderLevels(niveles, userProgress = {}) {
         const container = document.getElementById('levels-grid');
         container.innerHTML = '';
 
@@ -682,7 +774,9 @@ const App = {
             const card = document.createElement('div');
             card.className = `level-card ${nivel.estado === 1 ? 'locked' : ''}`;
 
-            const stars = this.renderStars(0); // TODO: Obtener progreso real
+            // Obtener estrellas del progreso del usuario o 0 por defecto
+            const userStars = userProgress[nivel.idNivel] || 0;
+            const stars = this.renderStars(userStars);
 
             card.innerHTML = `
                 <div class="level-number">${index + 1}</div>
@@ -714,6 +808,19 @@ const App = {
                 html += '<i class="fas fa-star star"></i>';
             } else {
                 html += '<i class="fas fa-star star empty"></i>';
+            }
+        }
+        return html;
+    },
+
+    // Renderizar estrellas para el modal de resultado (con animaciones)
+    renderResultStars(count) {
+        let html = '';
+        for (let i = 1; i <= 3; i++) {
+            if (i <= count) {
+                html += '<span class="star">⭐</span>';
+            } else {
+                html += '<span class="star">☆</span>';
             }
         }
         return html;
@@ -754,7 +861,7 @@ const App = {
     // Configurar juego
     setupGame() {
         document.getElementById('level-title').textContent = this.currentLevel.titulo;
-        document.getElementById('help-description').textContent = this.currentLevel.ayudaDescripcion;
+        document.getElementById('help-description').textContent = '// ' + this.currentLevel.ayudaDescripcion;
 
         // Reiniciar estado del juego
         this.errorsCount = 0;
@@ -1641,49 +1748,63 @@ const App = {
         const title = document.getElementById('result-title');
         const message = document.getElementById('result-message');
         const stars = document.getElementById('result-stars');
+        const resultTime = document.getElementById('result-time');
+        const resultErrors = document.getElementById('result-errors');
+        const resultBackground = document.getElementById('result-background');
         const nextBtn = document.getElementById('next-level');
         const retryBtn = document.getElementById('retry-level');
         const backBtn = document.getElementById('back-to-menu');
 
         if (result.correcto) {
+            // Configurar fondo dinámico según estrellas en result-content
+            const resultContent = modal.querySelector('.result-content');
+            resultContent.className = 'result-content';
+            if (result.estrellas === 3) {
+                resultContent.classList.add('stars-3');
+            } else if (result.estrellas === 2) {
+                resultContent.classList.add('stars-2');
+            } else {
+                resultContent.classList.add('stars-1');
+            }
+
+            // Limpiar el fondo del background
+            resultBackground.className = 'result-background';
+            resultBackground.style.background = 'none';
+
             icon.innerHTML = '<i class="fas fa-check-circle" style="color: #4CAF50; font-size: 4rem;"></i>';
             title.textContent = '¡Felicidades!';
             message.textContent = result.message;
-            stars.innerHTML = this.renderStars(result.estrellas);
+            
+            // Mostrar estrellas con animación
+            const starsHtml = this.renderResultStars(result.estrellas);
+            stars.innerHTML = starsHtml;
+            stars.className = 'stars-result'; // Agregar clase para animaciones
+
+            // Mostrar estadísticas
+            if (resultTime) {
+                const minutes = Math.floor(result.tiempo / 60);
+                const seconds = result.tiempo % 60;
+                resultTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            if (resultErrors) {
+                resultErrors.textContent = `${this.errorsCount}/${this.maxErrors}`;
+            }
 
             // Mostrar todos los botones en caso de éxito con estilos específicos
             nextBtn.style.display = 'inline-block';
             nextBtn.style.backgroundColor = '#4CAF50';
             nextBtn.style.color = 'white';
             nextBtn.style.border = 'none';
-            nextBtn.style.padding = '12px 24px';
-            nextBtn.style.borderRadius = '8px';
-            nextBtn.style.cursor = 'pointer';
-            nextBtn.style.fontSize = '16px';
-            nextBtn.style.fontWeight = 'bold';
-            nextBtn.style.margin = '8px';
 
             retryBtn.style.display = 'inline-block';
             retryBtn.style.backgroundColor = '#2196F3';
             retryBtn.style.color = 'white';
             retryBtn.style.border = 'none';
-            retryBtn.style.padding = '12px 24px';
-            retryBtn.style.borderRadius = '8px';
-            retryBtn.style.cursor = 'pointer';
-            retryBtn.style.fontSize = '16px';
-            retryBtn.style.fontWeight = 'bold';
-            retryBtn.style.margin = '8px';
 
             backBtn.style.display = 'inline-block';
             backBtn.style.backgroundColor = '#6c757d';
             backBtn.style.color = 'white';
             backBtn.style.border = 'none';
-            backBtn.style.padding = '12px 24px';
-            backBtn.style.borderRadius = '8px';
-            backBtn.style.cursor = 'pointer';
-            backBtn.style.fontSize = '16px';
-            backBtn.style.fontWeight = 'bold';
-            backBtn.style.margin = '8px';
 
             // Celebración del personaje
             if (window.characterManager) {
@@ -1720,10 +1841,27 @@ const App = {
                 }, 500);
             }
         } else {
+            // Limpiar clases de imagen de fondo y aplicar fondo de error
+            const resultContent = modal.querySelector('.result-content');
+            resultContent.className = 'result-content';
+            
+            resultBackground.className = 'result-background';
+            resultBackground.style.background = 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)';
+
             icon.innerHTML = '<i class="fas fa-times-circle" style="color: #f44336; font-size: 4rem;"></i>';
             title.textContent = 'Intenta de nuevo';
             message.textContent = result.message;
             stars.innerHTML = '';
+
+            // Mostrar estadísticas para error también
+            if (resultTime) {
+                const minutes = Math.floor(result.tiempo / 60);
+                const seconds = result.tiempo % 60;
+                resultTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+            if (resultErrors) {
+                resultErrors.textContent = `${this.errorsCount}/${this.maxErrors}`;
+            }
 
             // En caso de error, ocultar "Siguiente Nivel" pero mostrar los otros con estilos
             nextBtn.style.display = 'none';
@@ -1732,23 +1870,11 @@ const App = {
             retryBtn.style.backgroundColor = '#ff9800';
             retryBtn.style.color = 'white';
             retryBtn.style.border = 'none';
-            retryBtn.style.padding = '12px 24px';
-            retryBtn.style.borderRadius = '8px';
-            retryBtn.style.cursor = 'pointer';
-            retryBtn.style.fontSize = '16px';
-            retryBtn.style.fontWeight = 'bold';
-            retryBtn.style.margin = '8px';
 
             backBtn.style.display = 'inline-block';
             backBtn.style.backgroundColor = '#6c757d';
             backBtn.style.color = 'white';
             backBtn.style.border = 'none';
-            backBtn.style.padding = '12px 24px';
-            backBtn.style.borderRadius = '8px';
-            backBtn.style.cursor = 'pointer';
-            backBtn.style.fontSize = '16px';
-            backBtn.style.fontWeight = 'bold';
-            backBtn.style.margin = '8px';
 
             // Personaje triste y mensaje de ánimo
             if (window.characterManager) {
@@ -1763,6 +1889,9 @@ const App = {
         }
 
         modal.style.display = 'block';
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
     },
 
     // Detener temporizador
@@ -1872,12 +2001,22 @@ const App = {
     // Volver al menú
     backToMenu() {
         this.hideResultModal();
-        this.showScreen('level-screen');
+        
+        // Recargar niveles con progreso actualizado si el usuario está logueado
+        if (this.currentUser && this.currentLanguage) {
+            this.selectLanguage(this.currentLanguage);
+        } else {
+            this.showScreen('level-screen');
+        }
     },
 
     // Ocultar modal de resultado
     hideResultModal() {
-        document.getElementById('result-modal').style.display = 'none';
+        const modal = document.getElementById('result-modal');
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     },
 
     // Mostrar pantalla

@@ -123,7 +123,7 @@ function updateAvatar() {
             return;
         }
         
-        // Lista de avatares válidos
+        // Lista de avatares válidos (archivos locales)
         $validAvatars = [
             'default.png',
             'avatar1.png',
@@ -139,7 +139,13 @@ function updateAvatar() {
             'html.png'
         ];
         
-        if (!in_array($newAvatar, $validAvatars)) {
+        // Verificar si es un avatar local válido o una URL externa
+        $isValidAvatar = in_array($newAvatar, $validAvatars) || 
+                        strpos($newAvatar, 'https://ui-avatars.com/') === 0 ||
+                        strpos($newAvatar, 'https://lh3.googleusercontent.com/') === 0 ||
+                        filter_var($newAvatar, FILTER_VALIDATE_URL);
+        
+        if (!$isValidAvatar) {
             echo json_encode(['error' => 'Avatar no válido']);
             return;
         }
