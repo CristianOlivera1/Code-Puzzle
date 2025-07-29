@@ -2,6 +2,8 @@
 
 **Puzzle Code** es una aplicación web educativa interactiva que permite a los usuarios aprender programación mediante el ensamblaje de líneas de código usando una interfaz de arrastrar y soltar (drag & drop).
 
+<img width="1920" height="1080" alt="333shots_so" src="https://github.com/user-attachments/assets/3f70684f-14dd-49bb-a150-c53d25597041" />
+
 ## 🚀 Características Principales
 
 ### 🎮 Sistema de Juego
