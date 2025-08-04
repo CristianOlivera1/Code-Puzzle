@@ -537,15 +537,23 @@ const App = {
             }
 
             // Actualizar avatares
-            if (this.currentUser.foto && this.currentUser.foto !== '') {
-                // Determinar si es URL externa o archivo local
-                const isExternalUrl = this.currentUser.foto.startsWith('https://') || 
-                                    this.currentUser.foto.startsWith('http://');
-                const avatarSrc = isExternalUrl 
-                    ? this.currentUser.foto 
-                    : `assets/images/${this.currentUser.foto}`;
-                
-                // Mostrar imagen de avatar
+            const foto = this.currentUser.foto;
+            let avatarSrc = '';
+
+            // Verificar si la foto es una URL externa (UI Avatars, Google, o cualquier http/https)
+            if (foto && (
+                foto.startsWith('https://ui-avatars.com/') ||
+                foto.startsWith('https://lh3.googleusercontent.com/') ||
+                foto.startsWith('https://') ||
+                foto.startsWith('http://')
+            )) {
+                avatarSrc = foto;
+            } else if (foto && foto !== '') {
+                avatarSrc = `assets/images/${foto}`;
+            }
+
+            // Mostrar imagen de avatar o placeholder
+            if (avatarSrc) {
                 if (userAvatar) {
                     userAvatar.src = avatarSrc;
                     userAvatar.style.display = 'block';
@@ -567,7 +575,6 @@ const App = {
                     dropdownAvatarPlaceholder.style.display = 'none';
                 }
             } else {
-                // Mostrar placeholder de avatar
                 if (userAvatar) {
                     userAvatar.style.display = 'none';
                 }
@@ -2082,13 +2089,13 @@ const App = {
             notification.style.transform = 'translateX(0)';
         }, 100);
 
-        // Remover después de 3 segundos
+        // Remover después de 5 segundos
         setTimeout(() => {
             notification.style.transform = 'translateX(100%)';
             setTimeout(() => {
                 document.body.removeChild(notification);
             }, 300);
-        }, 3000);
+        }, 5000);
     }
 };
 

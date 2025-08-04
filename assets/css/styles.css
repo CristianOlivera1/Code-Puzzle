@@ -636,7 +636,7 @@ box-shadow: 5px 10px 20px rgb(255, 234, 0);
 }
 
 .modal-content {
-  background: transparent; 
+  background: #E0E0E0; 
   border-radius: 16px;
   width: 100%;
   max-width: 1000px;
