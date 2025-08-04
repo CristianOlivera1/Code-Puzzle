@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-08-2025 a las 14:27:21
+-- Tiempo de generación: 04-08-2025 a las 15:23:26
 -- Versión del servidor: 10.4.27-MariaDB
 -- Versión de PHP: 8.2.0
 
@@ -93,11 +93,7 @@ CREATE TABLE `progresousuario` (
 --
 
 INSERT INTO `progresousuario` (`idProgresoUsuario`, `idUsuario`, `idNivel`, `estrellas`, `tiempoSegundos`) VALUES
-(1, 5, 1, 3, 1),
-(2, 5, 4, 3, 2),
-(3, 5, 5, 3, 4),
-(4, 6, 4, 3, 1),
-(5, 6, 1, 3, 1);
+(6, 9, 1, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -140,10 +136,10 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`idUsuario`, `idRol`, `nombreUsuario`, `correo`, `contrasena`, `foto`, `estadoConexion`) VALUES
 (1, 1, 'admin', 'admin@puzzlecode.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin.png', 0),
-(2, 2, 'cris', 'cris@gmail.com', '$2y$10$zmiLgDDVux5dQDYWGSCM8uVfYMCUu0jn.jdREFroxCQn8FwiK3wza', 'default.png', 0),
-(5, 2, 'Cristian Olivera Chavez', '221181@unamba.edu.pe', '', 'https://lh3.googleusercontent.com/a/ACg8ocJet4WEJdQp62eH6vT4oHSVEQfA05sDhOReU1YLLmAQrM9zPCfk=s96-c', 0),
-(6, 2, 'Cristian Oner', 'oliverachavezcristian@gmail.com', '', 'https://lh3.googleusercontent.com/a/ACg8ocJRA-aaHKrIql3FaqMeg6oGEge2FK7kfiN0MDcKFIAG-l4T_qoz=s96-c', 0),
-(8, 2, 'dani e', '123@gmail.com', '$2y$10$nX7G2cAkPpto1z.n8ymmNOuPycsNFpevRH9BePLCtC0CVz3c3nh8u', 'https://ui-avatars.com/api/?name=dani%2Be&size=200&background=EC4899&color=ffffff&format=png&rounded=true&bold=true&font-size=0.5', 0);
+(2, 1, 'cris', 'cris@gmail.com', '$2y$10$zmiLgDDVux5dQDYWGSCM8uVfYMCUu0jn.jdREFroxCQn8FwiK3wza', 'default.png', 1),
+(8, 2, 'dani e', '123@gmail.com', '$2y$10$nX7G2cAkPpto1z.n8ymmNOuPycsNFpevRH9BePLCtC0CVz3c3nh8u', 'https://ui-avatars.com/api/?name=dani%2Be&size=200&background=EC4899&color=ffffff&format=png&rounded=true&bold=true&font-size=0.5', 0),
+(9, 2, 'Cristian Olivera Chavez', '221181@unamba.edu.pe', '', 'https://lh3.googleusercontent.com/a/ACg8ocJet4WEJdQp62eH6vT4oHSVEQfA05sDhOReU1YLLmAQrM9zPCfk=s96-c', 0),
+(10, 2, 'usuarioprueba', 'prueba@gmail.com', '$2y$10$xBuF6v4MOH.X4SOXJD5N/eN8zergbLyd63nEP6zbgr9nGdSISPW.m', 'https://ui-avatars.com/api/?name=usuarioprueba&size=200&background=10B981&color=ffffff&format=png&rounded=true&bold=true&font-size=0.5', 0);
 
 --
 -- Índices para tablas volcadas
@@ -204,7 +200,7 @@ ALTER TABLE `nivel`
 -- AUTO_INCREMENT de la tabla `progresousuario`
 --
 ALTER TABLE `progresousuario`
-  MODIFY `idProgresoUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idProgresoUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -216,7 +212,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restricciones para tablas volcadas
