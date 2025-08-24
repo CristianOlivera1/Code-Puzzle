@@ -714,7 +714,7 @@ const App = {
       <p>${language.niveles.length} Niveles</p>
       <h3>${language.nombre}</h3>
     </div>
-    <img src="assets/images/${language.foto}.svg" alt="${language.nombre}" onerror="this.src='assets/images/default.png'" />
+    <img src="assets/images/${language.foto}" alt="${language.nombre}" onerror="this.src='assets/images/default.png'" />
   `;
 
             card.addEventListener('click', () => {
@@ -945,11 +945,15 @@ const App = {
         });
     },
 
-    // Crear un bloque de código individual
+    // Crear un bloque de código individual PRESERVANDO INDENTACIONES
     createCodeBlock(linea, index) {
         const block = document.createElement('div');
         block.className = 'code-block';
-        block.innerHTML = this.escapeHtml(linea);
+        
+        // CRÍTICO: Preservar indentaciones al mostrar el código
+        const htmlContent = this.formatCodeWithIndentation(linea);
+        block.innerHTML = htmlContent;
+        
         block.setAttribute('data-line', linea);
         block.setAttribute('data-index', index);
         block.draggable = true;
@@ -958,6 +962,20 @@ const App = {
         this.setupBlockDragEvents(block);
 
         return block;
+    },
+
+    // Formatear código preservando indentaciones visualmente
+    formatCodeWithIndentation(linea) {
+        // Escapar HTML primero
+        let escaped = this.escapeHtml(linea);
+        
+        // Convertir espacios iniciales a espacios no divisibles (&nbsp;)
+        // para preservar visualmente la indentación
+        escaped = escaped.replace(/^(\s+)/, (match, spaces) => {
+            return '&nbsp;'.repeat(spaces.length);
+        });
+        
+        return escaped;
     },
 
     // Configurar eventos de drag para un bloque

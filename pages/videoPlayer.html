@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de Videos 🎬🎬🎬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="h-screen w-screen bg-cover bg-center text-white"
+    style="background-image: url('https://raw.githubusercontent.com/CristianOlivera1/Reproductor-de-musica/main/resources/img/fondo.jpg');">
+
+    <!-- Overlay -->
+    <div class="h-full w-full bg-black/30 flex items-center justify-center">
+
+        <!-- Contenedor principal -->
+        <div class="w-[95%] max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Reproductor de Video -->
+            <div class="col-span-2 bg-white/5 backdrop-blur-lg rounded-2xl p-6">
+                <h2 class="text-xl font-semibold mb-6">
+                    Reproductor de <span class="text-red-400">Videos</span>
+                </h2>
+
+                <!-- Container del Video con controles overlay -->
+                <div id="videoContainer" class="relative bg-black rounded-xl overflow-hidden shadow-2xl">
+                    <video id="videoPlayer" 
+                           class="w-full h-[600px] object-cover cursor-pointer" 
+                           poster="https://images.pexels.com/videos/1093662/free-video-1093662.jpg?fit=crop&w=1200&h=630&auto=compress&cs=tinysrgb"
+                           preload="metadata">
+                        <source src="" type="video/mp4">
+                        Tu navegador no soporta el elemento video.
+                    </video>
+                    
+                    <!-- Overlay con información del video (superior) -->
+                    <div id="videoTopOverlay" class="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 to-transparent p-4 transition-opacity duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 id="videoTitle" class="text-lg font-bold mb-1">Selecciona un video</h3>
+                                <p id="videoAuthor" class="text-sm text-gray-300">Pexels</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <img id="currentVideoThumb" 
+                                     src="https://images.pexels.com/videos/1093662/free-video-1093662.jpg?auto=compress&cs=tinysrgb&w=100" 
+                                     class="w-12 h-12 rounded-lg object-cover">
+                                <div class="text-right">
+                                    <p id="currentVideoQuality" class="text-xs text-blue-400">HD</p>
+                                    <p id="currentVideoDuration" class="text-xs text-gray-300">00:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controles principales overlay (centro) -->
+                    <div id="videoCenterOverlay" class="absolute inset-0 flex items-center justify-center transition-opacity duration-300">
+                        <div class="flex items-center gap-6 bg-black/50 rounded-full p-4">
+                            <button id="prevVideoBtn"
+                                class="bg-white/20 text-white p-3 rounded-full hover:bg-white/30 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                                </svg>
+                            </button>
+
+                            <button id="playVideoBtn"
+                                class="bg-red-500 text-white p-6 rounded-full hover:bg-red-600 transition-all duration-200 transform hover:scale-110">
+                                <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" class="hidden">
+                                    <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                                </svg>
+                            </button>
+
+                            <button id="nextVideoBtn"
+                                class="bg-white/20 text-white p-3 rounded-full hover:bg-white/30 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Controles inferiores overlay -->
+                    <div id="videoBottomOverlay" class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4 transition-opacity duration-300">
+                        <!-- Información del video actual -->
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="flex-1">
+                                <p id="currentVideoTitle" class="font-medium text-sm">Cargando videos...</p>
+                                <p id="currentVideoInfo" class="text-xs text-gray-300">Preparando contenido</p>
+                            </div>
+                        </div>
+
+                        <!-- Barra de progreso y controles -->
+                        <div class="flex items-center gap-3">
+                            <span id="currentTime" class="text-xs min-w-[35px]">0:00</span>
+                            <input id="videoSeekBar" type="range" min="0" value="0" 
+                                   class="flex-1 accent-red-500 h-2 bg-gray-600 rounded-lg">
+                            <span id="totalDuration" class="text-xs min-w-[35px]">0:00</span>
+
+                            <!-- Control de volumen -->
+                            <div class="flex items-center gap-2 ml-2">
+                                <button id="muteBtn" class="text-sm hover:text-red-400 transition-colors">
+                                    <svg id="volumeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                    </svg>
+                                    <svg id="muteIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="hidden">
+                                        <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27L7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21L21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                                    </svg>
+                                </button>
+                                <input id="volumeBar" type="range" min="0" max="100" value="70"
+                                    class="w-16 accent-red-500">
+                            </div>
+
+                            <!-- Pantalla completa -->
+                            <button id="fullscreenBtn" class="text-sm hover:text-red-400 transition-colors ml-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Estado de carga -->
+                    <div id="loadingOverlay" class="absolute inset-0 bg-black/50 items-center justify-center hidden">
+                        <div class="bg-white/20 rounded-lg p-4 flex items-center gap-3">
+                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                            <span>Cargando video...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de videos -->
+            <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-4 flex flex-col h-[95vh]">
+
+                <!-- Buscador -->
+                <div class="flex items-center mb-4 bg-white/20 rounded-lg px-3 py-2">
+                    <input id="searchInput" type="text" placeholder="Buscar videos..."
+                        class="bg-transparent flex-1 text-sm outline-none placeholder-gray-300">
+                    <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
+                    </svg>
+                </div>
+
+                <!-- Filtros de calidad -->
+                <div class="flex gap-2 mb-4">
+                    <button class="quality-filter active bg-red-500 text-white px-3 py-1 rounded-full text-xs" data-quality="all">
+                        Todos
+                    </button>
+                    <button class="quality-filter bg-white/20 text-white px-3 py-1 rounded-full text-xs hover:bg-white/30" data-quality="hd">
+                        HD
+                    </button>
+                    <button class="quality-filter bg-white/20 text-white px-3 py-1 rounded-full text-xs hover:bg-white/30" data-quality="sd">
+                        SD
+                    </button>
+                </div>
+
+                <!-- Lista de videos -->
+                <ul id="videoList" class="space-y-3 overflow-y-auto flex-1 max-h-full">
+                    <!-- Loading state -->
+                    <li class="bg-white/5 p-3 rounded-lg">
+                        <div class="flex gap-3">
+                            <div class="w-16 h-12 bg-white/20 rounded-lg animate-pulse flex-shrink-0"></div>
+                            <div class="flex-1">
+                                <div class="w-32 h-4 bg-white/20 rounded animate-pulse mb-2"></div>
+                                <div class="w-24 h-3 bg-white/20 rounded animate-pulse mb-1"></div>
+                                <div class="w-16 h-3 bg-white/20 rounded animate-pulse"></div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="bg-white/5 p-3 rounded-lg">
+                        <div class="flex gap-3">
+                            <div class="w-16 h-12 bg-white/20 rounded-lg animate-pulse flex-shrink-0"></div>
+                            <div class="flex-1">
+                                <div class="w-28 h-4 bg-white/20 rounded animate-pulse mb-2"></div>
+                                <div class="w-20 h-3 bg-white/20 rounded animate-pulse mb-1"></div>
+                                <div class="w-12 h-3 bg-white/20 rounded animate-pulse"></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estilos personalizados -->
+    <style>
+        /* Personalizar slider de video */
+        #videoSeekBar::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ef4444;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #videoSeekBar::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ef4444;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Container del video con controles overlay */
+        #videoContainer {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        #videoContainer:hover #videoTopOverlay,
+        #videoContainer:hover #videoBottomOverlay,
+        #videoContainer:hover #videoCenterOverlay {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #videoContainer.hide-controls #videoTopOverlay,
+        #videoContainer.hide-controls #videoBottomOverlay,
+        #videoContainer.hide-controls #videoCenterOverlay {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Overlays del video */
+        #videoTopOverlay,
+        #videoBottomOverlay,
+        #videoCenterOverlay {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* Ocultar controles centrales cuando se está reproduciendo */
+        #videoContainer.playing #videoCenterOverlay {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #videoContainer.playing:hover #videoCenterOverlay {
+            opacity: 0.8;
+            visibility: visible;
+        }
+
+        /* Mejorar la visibilidad de los controles */
+        #videoBottomOverlay {
+            backdrop-filter: blur(8px);
+        }
+
+        #videoTopOverlay {
+            backdrop-filter: blur(8px);
+        }
+
+        #videoCenterOverlay {
+            backdrop-filter: blur(1px);
+        }
+
+        /* Animaciones para botones */
+        .quality-filter.active {
+            transform: scale(1.05);
+        }
+
+        .quality-filter {
+            transition: all 0.2s ease;
+        }
+
+        /* Animación del botón play central */
+        #playVideoBtn {
+            transition: all 0.3s ease;
+        }
+
+        #playVideoBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Estilo para items de video */
+        .video-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .video-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
+        }
+
+        .video-item.active {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 3px solid #ef4444;
+        }
+
+        /* Indicador de controles */
+        .controls-hint {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        #videoContainer.show-hint .controls-hint {
+            opacity: 1;
+        }
+
+        /* Cursor personalizado sobre el video */
+        #videoPlayer {
+            cursor: none;
+        }
+
+        #videoContainer:hover #videoPlayer {
+            cursor: pointer;
+        }
+
+        /* Pantalla completa */
+        #videoContainer:fullscreen {
+            background: black;
+        }
+
+        #videoContainer:fullscreen #videoPlayer {
+            height: 100vh;
+            object-fit: contain;
+        }
+
+        /* Spinner personalizado */
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #videoContainer #videoCenterOverlay .flex {
+                gap: 1rem;
+            }
+            
+            #playVideoBtn {
+                padding: 1rem;
+            }
+            
+            #prevVideoBtn,
+            #nextVideoBtn {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+
+    <script src="../assets/js/videoPlayer.js"></script>
+</body>
+
+</html>

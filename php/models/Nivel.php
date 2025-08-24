@@ -59,22 +59,32 @@ class Nivel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Desordenar código para el juego
+    // Desordenar código para el juego PRESERVANDO INDENTACIONES
     public function desordenarCodigo($codigo) {
-        // Usar el mismo procesamiento que verificarOrden
-        $lineas = array_map('trim', explode("\n", trim($codigo)));
+        // CRÍTICO: NO usar trim() que elimina indentación
+        $lineas = explode("\n", trim($codigo));
         
-        // Filtrar líneas vacías
-        $lineas = array_filter($lineas, function($linea) {
-            return !empty($linea);
-        });
+        // Procesar líneas preservando indentación
+        $lineasProcesadas = [];
+        foreach ($lineas as $linea) {
+            // Solo limpiar espacios al FINAL, preservar indentación inicial
+            $lineaProcesada = rtrim($linea);
+            
+            // Convertir tabs a espacios ANTES de filtrar
+            $lineaProcesada = str_replace("\t", "    ", $lineaProcesada);
+            
+            // Solo agregar líneas que no estén completamente vacías
+            if (trim($lineaProcesada) !== '') {
+                $lineasProcesadas[] = $lineaProcesada;
+            }
+        }
         
         // Reindexar el array
-        $lineas = array_values($lineas);
+        $lineasProcesadas = array_values($lineasProcesadas);
         
-        // Desordenar
-        shuffle($lineas);
-        return $lineas;
+        // Desordenar manteniendo la indentación intacta
+        shuffle($lineasProcesadas);
+        return $lineasProcesadas;
     }
 
     // Verificar si el código está correctamente ordenado
@@ -174,7 +184,7 @@ class Nivel {
         return $lineaOriginal === $lineaLimpia;
     }
     
-    // Función auxiliar para limpiar líneas de forma consistente
+    // Función auxiliar para limpiar líneas PRESERVANDO INDENTACIONES
     private function limpiarLinea($linea) {
         error_log("LIMPIAR LÍNEA - Input: " . var_export($linea, true));
         
@@ -182,34 +192,52 @@ class Nivel {
         $linea = html_entity_decode($linea, ENT_QUOTES, 'UTF-8');
         error_log("LIMPIAR LÍNEA - Después de html_entity_decode: " . var_export($linea, true));
         
-        // Limpiar espacios al inicio y final
-        $linea = trim($linea);
-        error_log("LIMPIAR LÍNEA - Después de trim: " . var_export($linea, true));
+        // CRÍTICO: NO usar trim() - preservar espacios iniciales (indentación)
+        // Solo limpiar espacios al FINAL de la línea
+        $linea = rtrim($linea);
+        error_log("LIMPIAR LÍNEA - Después de rtrim (solo final): " . var_export($linea, true));
         
-        // Convertir tabulaciones a espacios (4 espacios por tab)
+        // Convertir tabulaciones a espacios (4 espacios por tab) ANTES de normalizar
         $linea = str_replace("\t", "    ", $linea);
         error_log("LIMPIAR LÍNEA - Después de convertir tabs: " . var_export($linea, true));
         
-        // Normalizar espacios múltiples a uno solo SOLO al inicio y entre palabras
-        // Pero conservar espacios de indentación
-        $linea = preg_replace('/[ ]{2,}/', ' ', $linea);
-        error_log("LIMPIAR LÍNEA - Output final: " . var_export($linea, true));
+        // IMPORTANTE: NO normalizar espacios múltiples para preservar indentación
+        // La indentación puede requerir múltiples espacios consecutivos
+        // Solo normalizar espacios múltiples en el CONTENIDO, no al inicio
         
-        return $linea;
+        // Detectar cuántos espacios de indentación hay
+        preg_match('/^(\s*)(.*)$/', $linea, $matches);
+        $indentacion = $matches[1] ?? '';  // Espacios iniciales
+        $contenido = $matches[2] ?? '';     // Resto del contenido
+        
+        // Normalizar solo espacios múltiples en el contenido (no en indentación)
+        $contenido = preg_replace('/[ ]{2,}/', ' ', $contenido);
+        
+        // Reconstruir la línea con indentación preservada
+        $lineaFinal = $indentacion . $contenido;
+        
+        error_log("LIMPIAR LÍNEA - Indentación: " . var_export($indentacion, true));
+        error_log("LIMPIAR LÍNEA - Contenido: " . var_export($contenido, true));
+        error_log("LIMPIAR LÍNEA - Output final: " . var_export($lineaFinal, true));
+        
+        return $lineaFinal;
     }
     
-    // Función auxiliar para obtener líneas limpias (usada por ambas verificaciones)
+    // Función auxiliar para obtener líneas limpias PRESERVANDO INDENTACIONES
     public function obtenerLineasLimpias($codigo) {
         // Dividir el código original en líneas
         $lineas = explode("\n", trim($codigo));
         
-        // Limpiar cada línea
-        $lineasLimpias = array_map([$this, 'limpiarLinea'], $lineas);
-        
-        // Filtrar líneas vacías
-        $lineasLimpias = array_filter($lineasLimpias, function($linea) {
-            return !empty($linea);
-        });
+        // Procesar cada línea preservando indentación
+        $lineasLimpias = [];
+        foreach ($lineas as $linea) {
+            $lineaLimpia = $this->limpiarLinea($linea);
+            
+            // Solo agregar líneas que no estén completamente vacías
+            if (trim($lineaLimpia) !== '') {
+                $lineasLimpias[] = $lineaLimpia;
+            }
+        }
         
         // Reindexar array
         return array_values($lineasLimpias);
