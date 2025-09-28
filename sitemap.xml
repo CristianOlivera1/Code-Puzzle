@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- Página principal -->
+    <url>
+        <loc>https://codepuzzle.rf.gd/</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Página de inicio -->
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/index.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- Página de perfil -->
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/pages/profile.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Página de administración -->
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/pages/admin.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Reproductor de música -->
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/pages/musicPlayer.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Reproductor de video -->
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/pages/videoPlayer.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- Páginas de prueba -->
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/test_admin.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <url>
+        <loc>https://cristianolivera1.github.io/Code-Puzzle/test_characters.html</loc>
+        <lastmod>2025-09-28</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+</urlset>

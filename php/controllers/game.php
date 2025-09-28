@@ -13,7 +13,7 @@ $progreso = new ProgresoUsuario($db);
 
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
-switch($action) {
+switch ($action) {
     case 'obtener_niveles':
         obtenerNiveles();
         break;
@@ -40,91 +40,94 @@ switch($action) {
         break;
 }
 
-function obtenerNiveles() {
+function obtenerNiveles()
+{
     global $nivel;
-    
+
     $idLenguaje = $_GET['idLenguaje'] ?? null;
-    
+
     if ($idLenguaje) {
         $niveles = $nivel->obtenerPorLenguaje($idLenguaje);
     } else {
         $niveles = $nivel->obtenerTodos();
     }
-    
+
     echo json_encode(['niveles' => $niveles]);
 }
 
-function obtenerNivel() {
+function obtenerNivel()
+{
     global $nivel;
-    
+
     $idNivel = $_GET['idNivel'] ?? '';
-    
+
     if (empty($idNivel)) {
         echo json_encode(['error' => 'ID de nivel requerido']);
         return;
     }
-    
+
     $nivelData = $nivel->obtenerPorId($idNivel);
-    
+
     if ($nivelData) {
         // Desordenar las líneas de código
         $lineasDesordenadas = $nivel->desordenarCodigo($nivelData['codigo']);
-        
+
         $nivelData['lineasDesordenadas'] = $lineasDesordenadas;
         unset($nivelData['codigo']); // No enviar el código correcto al frontend
-        
+
         echo json_encode(['nivel' => $nivelData]);
     } else {
         echo json_encode(['error' => 'Nivel no encontrado']);
     }
 }
 
-function verificarSolucion() {
+function verificarSolucion()
+{
     global $nivel, $progreso;
-    
+
     if (!isset($_SESSION['usuario'])) {
         echo json_encode(['error' => 'Usuario no autenticado']);
         return;
     }
-    
+
     $idNivel = $_POST['idNivel'] ?? '';
     $solucionJson = $_POST['solucion'] ?? '';
     $tiempoSegundos = $_POST['tiempoSegundos'] ?? 0;
-    
+
     if (empty($idNivel) || empty($solucionJson)) {
         echo json_encode(['error' => 'Datos incompletos']);
         return;
     }
-    
+
     // Decodificar el JSON de la solución
     $solucion = json_decode($solucionJson, true);
-    
+
     if (!is_array($solucion)) {
         echo json_encode(['error' => 'Formato de solución inválido']);
         return;
     }
-    
+
     $nivelData = $nivel->obtenerPorId($idNivel);
-    
+
     if (!$nivelData) {
         echo json_encode(['error' => 'Nivel no encontrado']);
         return;
     }
-    
+
     $esCorrecto = $nivel->verificarOrden($nivelData['codigo'], $solucion);
-    
+
     if ($esCorrecto) {
         // Calcular estrellas basado en el tiempo
         $estrellas = $progreso->calcularEstrellas($tiempoSegundos, $nivelData['tiempoLimite']);
-        
+
         // Guardar progreso
         $progreso->idUsuario = $_SESSION['usuario']['idUsuario'];
         $progreso->idNivel = $idNivel;
         $progreso->estrellas = $estrellas;
         $progreso->tiempoSegundos = $tiempoSegundos;
-        
+
         $progreso->guardarProgreso();
-        
+
         echo json_encode([
             'correcto' => true,
             'estrellas' => $estrellas,
@@ -139,32 +142,33 @@ function verificarSolucion() {
     }
 }
 
-function verificarLinea() {
+function verificarLinea()
+{
     global $nivel;
-    
+
     if (!isset($_SESSION['usuario'])) {
         echo json_encode(['success' => false, 'error' => 'Usuario no autenticado']);
         return;
     }
-    
+
     $idNivel = $_POST['idNivel'] ?? '';
     $posicion = $_POST['posicion'] ?? -1;
     $lineaTexto = $_POST['linea'] ?? '';
-    
+
     if (empty($idNivel) || $posicion < 0 || empty($lineaTexto)) {
         echo json_encode(['success' => false, 'error' => 'Datos incompletos']);
         return;
     }
-    
+
     $nivelData = $nivel->obtenerPorId($idNivel);
-    
+
     if (!$nivelData) {
         echo json_encode(['success' => false, 'error' => 'Nivel no encontrado']);
         return;
     }
-    
+
     $esCorrecta = $nivel->verificarLineaEnPosicion($nivelData['codigo'], $posicion, $lineaTexto);
-    
+
     echo json_encode([
         'success' => true,
         'correcta' => $esCorrecta,
@@ -173,39 +177,41 @@ function verificarLinea() {
     ]);
 }
 
-function obtenerProgreso() {
+function obtenerProgreso()
+{
     global $progreso;
-    
+
     if (!isset($_SESSION['usuario'])) {
         echo json_encode(['error' => 'Usuario no autenticado']);
         return;
     }
-    
+
     $progresoUsuario = $progreso->obtenerProgresoUsuario($_SESSION['usuario']['idUsuario']);
     echo json_encode(['progreso' => $progresoUsuario]);
 }
 
-function desbloquearNivel() {
+function desbloquearNivel()
+{
     global $db;
-    
+
     if (!isset($_SESSION['usuario'])) {
         echo json_encode(['error' => 'Usuario no autenticado']);
         return;
     }
-    
+
     $idNivel = $_POST['idNivel'] ?? '';
-    
+
     if (empty($idNivel)) {
         echo json_encode(['error' => 'ID de nivel requerido']);
         return;
     }
-    
+
     try {
         // Actualizar el estado del nivel para desbloquearlo
-        $query = "UPDATE Nivel SET estado = 0 WHERE idNivel = :idNivel";
+        $query = "UPDATE nivel SET estado = 0 WHERE idNivel = :idNivel";
         $stmt = $db->prepare($query);
         $stmt->bindParam(':idNivel', $idNivel);
-        
+
         if ($stmt->execute()) {
             echo json_encode([
                 'success' => true,
@@ -214,33 +220,33 @@ function desbloquearNivel() {
         } else {
             echo json_encode(['error' => 'Error al desbloquear nivel']);
         }
-        
     } catch (Exception $e) {
         echo json_encode(['error' => 'Error: ' . $e->getMessage()]);
     }
 }
 
-function debugNivel() {
+function debugNivel()
+{
     global $nivel;
-    
+
     $idNivel = $_GET['idNivel'] ?? '';
-    
+
     if (empty($idNivel)) {
         echo json_encode(['error' => 'ID de nivel requerido']);
         return;
     }
-    
+
     $nivelData = $nivel->obtenerPorId($idNivel);
-    
+
     if (!$nivelData) {
         echo json_encode(['error' => 'Nivel no encontrado']);
         return;
     }
-    
+
     // Procesar líneas como lo hace la verificación
     $codigo = $nivelData['codigo'];
     $lineasOriginales = $nivel->obtenerLineasLimpias($codigo);
-    
+
     echo json_encode([
         'nivel_id' => $idNivel,
         'titulo' => $nivelData['titulo'],
@@ -249,4 +255,3 @@ function debugNivel() {
         'total_lineas' => count($lineasOriginales)
     ]);
 }
-?>

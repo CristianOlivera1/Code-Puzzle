@@ -4,11 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puzzle Code - Juego Educativo de Programación</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Spanish">
+    <meta name="revisit-after" content="7 days">
+
+    <!-- Título y descripción SEO -->
+    <title>Puzzle Code - Juego Educativo de Programación | Aprende Jugando</title>
+    <meta name="description"
+        content="Aprende programación de manera divertida con Code Puzzle. Juego educativo interactivo con múltiples lenguajes de programación, sistema de progreso y desafíos emocionantes.">
+    <meta name="keywords"
+        content="programación, juego educativo, código, puzzle, JavaScript, Python, Java, HTML, CSS, aprender programación, coding game, educación tecnológica">
+    <meta name="author" content="Cristian Olivera">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://codepuzzle.rf.gd/">
+    <meta property="og:title" content="Puzzle Code - Juego Educativo de Programación">
+    <meta property="og:description"
+        content="Aprende programación de manera divertida con Code Puzzle. Juego educativo interactivo con múltiples lenguajes de programación.">
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/CristianOlivera1/Resources-dev/refs/heads/main/any/preview-codepuzzle.png">
+    <meta property="og:image:alt" content="Logo de Code Puzzle - Juego Educativo de Programación">
+    <meta property="og:site_name" content="Code Puzzle">
+    <meta property="og:locale" content="es_ES">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://codepuzzle.rf.gd/">
+    <meta name="twitter:title" content="Puzzle Code - Juego Educativo de Programación">
+    <meta name="twitter:description"
+        content="Aprende programación de manera divertida con Code Puzzle. Juego educativo interactivo con múltiples lenguajes.">
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/CristianOlivera1/Resources-dev/refs/heads/main/any/preview-codepuzzle.png">
+    <meta name="twitter:creator" content="@CristianOlivera">
+
+    <link rel="icon" type="image/x-icon" href="assets/images/img/logo.png">
+    <link rel="apple-touch-icon" href="assets/images/img/logo.png">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#3B82F6">
+    <meta name="msapplication-TileColor" content="#3B82F6">
+    <meta name="msapplication-navbutton-color" content="#3B82F6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="canonical" href="https://codepuzzle.rf.gd/">
+
+    <!-- Preconnect para mejor rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="stylesheet" href="assets/output.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/audio.css">
     <link rel="stylesheet" href="assets/css/characters.css">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
@@ -25,63 +79,70 @@
             </div>
             <nav class="nav">
                 <ul class="flex items-center">
-                    <li><a href="index.html" class="text-gray-200 hover:text-white" style="margin-right: 3em;">Inicio</a></li>
-                    <li><a href="pages/musicPlayer.html" class="text-gray-200 hover:text-white" style="margin-right: 3em;">AudioPlayer</a></li>
-                    <li><a href="pages/videoPlayer.html" class="text-gray-200 hover:text-white" style="margin-right: 6em;">VideoPlayer</a></li>
+                    <li><a href="index.html" class="text-gray-200 hover:text-white"
+                            style="margin-right: 3em;">Inicio</a></li>
+                    <li><a href="pages/musicPlayer.html" class="text-gray-200 hover:text-white"
+                            style="margin-right: 3em;">AudioPlayer</a></li>
+                    <li><a href="pages/videoPlayer.html" class="text-gray-200 hover:text-white"
+                            style="margin-right: 6em;">VideoPlayer</a></li>
                 </ul>
                 <div id="user-info" class="user-info" style="display: none;">
                     <div class="flex items-center gap-4 relative">
                         <div id="user-dropdown" class="inline-block group cursor-pointer relative">
                             <div class="flex items-center gap-2" id="user-trigger">
-                                <img id="user-avatar" src="" alt="Foto de perfil" 
-                                     class="w-11 h-11 rounded-full object-cover border-2" 
-                                     style="display: none; border: 1px solid #d1d5db;" />
-                                <div id="user-avatar-placeholder" 
-                                     class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center border-2 border-blue-400">
+                                <img id="user-avatar" src="" alt="Foto de perfil"
+                                    class="w-11 h-11 rounded-full object-cover border-2"
+                                    style="display: none; border: 1px solid #d1d5db;" />
+                                <div id="user-avatar-placeholder"
+                                    class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center border-2 border-blue-400">
                                     <i class="fas fa-user text-white text-lg"></i>
                                 </div>
                                 <span id="username" class="text-gray-200 sm:block font-medium"></span>
                             </div>
-                            <div id="dropdown-arrow" 
-                                 class="absolute bottom-0 -right-1.5 w-5 h-5 flex items-center justify-center bg-white rounded-full opacity-0 transition-opacity duration-300 border border-gray-300">
+                            <div id="dropdown-arrow"
+                                class="absolute bottom-0 -right-1.5 w-5 h-5 flex items-center justify-center bg-white rounded-full opacity-0 transition-opacity duration-300 border border-gray-300">
                                 <i class="fas fa-chevron-down text-gray-600 text-xs"></i>
                             </div>
                         </div>
                         <!-- Menú desplegable -->
-                        <div id="user-dropdown-menu" 
-                             class="absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-lg z-50 hidden" style="padding: 20px;">
+                        <div id="user-dropdown-menu"
+                            class="absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-lg z-50 hidden"
+                            style="padding: 20px;">
                             <div class="px-4 py-3 flex gap-3">
                                 <div class="relative flex h-12 w-12 shrink-0 overflow-hidden rounded-full">
-                                    <img id="dropdown-avatar" src="" alt="Foto de perfil" 
-                                         class="w-full h-full object-cover" style="display: none;" />
-                                    <div id="dropdown-avatar-placeholder" 
-                                         class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                    <img id="dropdown-avatar" src="" alt="Foto de perfil"
+                                        class="w-full h-full object-cover" style="display: none;" />
+                                    <div id="dropdown-avatar-placeholder"
+                                        class="w-full h-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
                                         <i class="fas fa-user text-white text-xl"></i>
                                     </div>
                                 </div>
                                 <div>
                                     <div id="dropdown-username" class="text-gray-900 font-medium mb-1"></div>
-                                    <div id="dropdown-email" class="text-sm text-gray-500 line-clamp-1 w-52 xl:w-50"></div>
+                                    <div id="dropdown-email" class="text-sm text-gray-500 line-clamp-1 w-52 xl:w-50">
+                                    </div>
                                 </div>
                             </div>
                             <ul>
                                 <li>
-                                    <a id="profile-btn" href="#" 
-                                       class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-gray-600 text-sm" style="padding: 12px 16px;">
+                                    <a id="profile-btn" href="#"
+                                        class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-gray-600 text-sm"
+                                        style="padding: 12px 16px;">
                                         <i class="fas fa-user w-6 h-6 text-center"></i>
                                         Perfil
                                     </a>
                                 </li>
                                 <li id="admin-menu-item" style="display: none;">
-                                    <a id="admin-panel-btn" href="#" 
-                                       class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-gray-600 text-sm">
+                                    <a id="admin-panel-btn" href="#"
+                                        class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-gray-600 text-sm">
                                         <i class="fas fa-cog w-6 h-6 text-center"></i>
                                         Panel de Administración
                                     </a>
                                 </li>
                                 <li>
-                                    <a id="logout-btn" href="#" 
-                                       class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-red-600 text-sm border-t border-gray-200" style="padding: 12px 16px;">
+                                    <a id="logout-btn" href="#"
+                                        class="flex items-center gap-3 px-6 py-2 hover:bg-gray-100 text-red-600 text-sm border-t border-gray-200"
+                                        style="padding: 12px 16px;">
                                         <i class="fas fa-sign-out-alt w-6 h-6 text-center"></i>
                                         Cerrar sesión
                                     </a>
@@ -91,7 +152,7 @@
                     </div>
                 </div>
                 <div id="auth-buttons">
-                    
+
                     <button id="login-btn"
                         class="px-1 text-sm sm:text-lg sm:px-2 sm:py-1 rounded mr-0 md:mr-2 hover:text-gray-400 text-white"
                         style="margin-right: 8px;">Iniciar Sesión</button>
@@ -105,7 +166,7 @@
 
     <main class="main">
         <!-- Pantalla de inicio -->
-       <section id="home-screen" class="screen active">
+        <section id="home-screen" class="screen active">
             <div class="container">
                 <section class="relative flex items-center justify-center min-h-[65vh] px-4 fade-in">
                     <div class="absolute top-12 left-10 z-0 floating-cloud">
@@ -464,7 +525,7 @@
                                     <button type="button" id="toggle-register-password"
                                         style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #d1d5db; background: none; border: none; padding: 0; cursor: pointer;"
                                         class="hover:text-white transition-colors">
-                                         <svg id="eye-register-icon" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                        <svg id="eye-register-icon" height="20" viewBox="0 0 24 24" fill="currentColor">
                                             <g fill="none" stroke="currentColor" stroke-width="1.5">
                                                 <path
                                                     d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4s7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20s-7.028-2.5-8.725-4.704Z" />
@@ -516,12 +577,12 @@
                         </div>
                         <div class="flex gap-2">
 
-                        <p id="result-message" style="color: whitesmoke;"></p>
-                        <div id="result-stars" class="stars-result"></div>
+                            <p id="result-message" style="color: whitesmoke;"></p>
+                            <div id="result-stars" class="stars-result"></div>
                         </div>
 
                     </div>
-                    
+
                     <div class="result-bottom">
                         <!-- Información adicional -->
                         <div class="result-stats">
@@ -540,7 +601,8 @@
                         <div class="result-actions">
                             <button id="retry-level" class="btn btn-secondary">Intentar de Nuevo</button>
                             <button id="back-to-menu" class="btn btn-secondary">Volver al Menú</button>
-                            <button id="next-level" class="btn btn-primary" style="display: none;">Siguiente Nivel</button>
+                            <button id="next-level" class="btn btn-primary" style="display: none;">Siguiente
+                                Nivel</button>
                         </div>
                     </div>
                 </div>

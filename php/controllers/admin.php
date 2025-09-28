@@ -17,7 +17,7 @@ $db = $database->connect();
 
 $action = $_GET['action'] ?? '';
 
-switch($action) {
+switch ($action) {
     // Dashboard
     case 'dashboard_stats':
         getDashboardStats();
@@ -25,7 +25,7 @@ switch($action) {
     case 'recent_activity':
         getRecentActivity();
         break;
-    
+
     // Usuarios
     case 'obtener_usuarios':
         obtenerUsuarios();
@@ -39,7 +39,7 @@ switch($action) {
     case 'eliminar_usuario':
         eliminarUsuario();
         break;
-    
+
     // Lenguajes
     case 'obtener_lenguajes':
         obtenerLenguajes();
@@ -53,7 +53,7 @@ switch($action) {
     case 'eliminar_lenguaje':
         eliminarLenguaje();
         break;
-    
+
     // Niveles
     case 'obtener_niveles_admin':
         obtenerNivelesAdmin();
@@ -67,46 +67,47 @@ switch($action) {
     case 'eliminar_nivel':
         eliminarNivel();
         break;
-    
+
     // Estadísticas
     case 'estadisticas_generales':
         getEstadisticasGenerales();
         break;
-    
+
     default:
         echo json_encode(['error' => 'Acción no válida']);
         break;
 }
 
-function getDashboardStats() {
+function getDashboardStats()
+{
     global $db;
-    
+
     try {
         // Total usuarios (solo jugadores)
-        $stmt = $db->prepare("SELECT COUNT(*) as total FROM Usuario WHERE idRol = 2");
+        $stmt = $db->prepare("SELECT COUNT(*) as total FROM usuario WHERE idRol = 2");
         $stmt->execute();
         $totalUsuarios = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-        
+
         // Total lenguajes
-        $stmt = $db->prepare("SELECT COUNT(*) as total FROM Lenguaje");
+        $stmt = $db->prepare("SELECT COUNT(*) as total FROM lenguaje");
         $stmt->execute();
         $totalLenguajes = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-        
+
         // Total niveles
-        $stmt = $db->prepare("SELECT COUNT(*) as total FROM Nivel");
+        $stmt = $db->prepare("SELECT COUNT(*) as total FROM nivel");
         $stmt->execute();
         $totalNiveles = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-        
+
         // Usuarios activos (que han completado al menos un nivel)
         $stmt = $db->prepare("
             SELECT COUNT(DISTINCT p.idUsuario) as activos
-            FROM ProgresoUsuario p
-            INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
+            FROM progresoUsuario p
+            INNER JOIN usuario u ON p.idUsuario = u.idUsuario
             WHERE u.idRol = 2
         ");
         $stmt->execute();
         $usuariosActivos = $stmt->fetch(PDO::FETCH_ASSOC)['activos'];
-        
+
         echo json_encode([
             'success' => true,
             'stats' => [
@@ -121,9 +122,10 @@ function getDashboardStats() {
     }
 }
 
-function getRecentActivity() {
+function getRecentActivity()
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("
             SELECT 
@@ -133,17 +135,17 @@ function getRecentActivity() {
                 p.estrellas,
                 p.tiempoSegundos,
                 'nivel_completado' as tipo
-            FROM ProgresoUsuario p
-            INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
-            INNER JOIN Nivel n ON p.idNivel = n.idNivel
-            INNER JOIN Lenguaje l ON n.idLenguaje = l.idLenguaje
+            FROM progresousuario p
+            INNER JOIN usuario u ON p.idUsuario = u.idUsuario
+            INNER JOIN nivel n ON p.idNivel = n.idNivel
+            INNER JOIN lenguaje l ON n.idLenguaje = l.idLenguaje
             ORDER BY p.idProgresoUsuario DESC
             LIMIT 10
         ");
-        
+
         $stmt->execute();
         $actividades = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         echo json_encode([
             'success' => true,
             'actividades' => $actividades
@@ -153,20 +155,21 @@ function getRecentActivity() {
     }
 }
 
-function obtenerUsuarios() {
+function obtenerUsuarios()
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("
             SELECT u.*, r.nombre as nombreRol 
-            FROM Usuario u 
+            FROM usuario u 
             INNER JOIN rol r ON u.idRol = r.idRol 
             ORDER BY u.idUsuario DESC
         ");
-        
+
         $stmt->execute();
         $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         echo json_encode([
             'success' => true,
             'usuarios' => $usuarios
@@ -176,28 +179,29 @@ function obtenerUsuarios() {
     }
 }
 
-function crearUsuario() {
+function crearUsuario()
+{
     global $db;
-    
+
     try {
         $nombreUsuario = $_POST['nombreUsuario'] ?? '';
         $correo = $_POST['correo'] ?? '';
         $contrasena = $_POST['contrasena'] ?? '';
         $idRol = $_POST['idRol'] ?? 2;
         $foto = $_POST['foto'] ?? 'default.png';
-        
+
         if (empty($nombreUsuario) || empty($correo) || empty($contrasena)) {
             echo json_encode(['error' => 'Todos los campos son requeridos']);
             return;
         }
-        
+
         $stmt = $db->prepare("
-            INSERT INTO Usuario (nombreUsuario, correo, contrasena, idRol, foto, estadoConexion) 
+            INSERT INTO usuario (nombreUsuario, correo, contrasena, idRol, foto, estadoConexion) 
             VALUES (?, ?, ?, ?, ?, 0)
         ");
-        
+
         $hashedPassword = password_hash($contrasena, PASSWORD_DEFAULT);
-        
+
         if ($stmt->execute([$nombreUsuario, $correo, $hashedPassword, $idRol, $foto])) {
             echo json_encode(['success' => true, 'message' => 'Usuario creado exitosamente']);
         } else {
@@ -208,9 +212,10 @@ function crearUsuario() {
     }
 }
 
-function editarUsuario() {
+function editarUsuario()
+{
     global $db;
-    
+
     try {
         $idUsuario = $_POST['idUsuario'] ?? '';
         $nombreUsuario = $_POST['nombreUsuario'] ?? '';
@@ -218,16 +223,16 @@ function editarUsuario() {
         $contrasena = $_POST['contrasena'] ?? '';
         $idRol = $_POST['idRol'] ?? '';
         $foto = $_POST['foto'] ?? '';
-        
+
         if (empty($idUsuario) || empty($nombreUsuario) || empty($correo) || empty($idRol)) {
             echo json_encode(['error' => 'Datos incompletos']);
             return;
         }
-        
+
         if (!empty($contrasena)) {
             // Actualizar con nueva contraseña
             $stmt = $db->prepare("
-                UPDATE Usuario 
+                UPDATE usuario 
                 SET nombreUsuario = ?, correo = ?, contrasena = ?, idRol = ?, foto = ? 
                 WHERE idUsuario = ?
             ");
@@ -236,13 +241,13 @@ function editarUsuario() {
         } else {
             // Actualizar sin cambiar contraseña
             $stmt = $db->prepare("
-                UPDATE Usuario 
+                UPDATE usuario 
                 SET nombreUsuario = ?, correo = ?, idRol = ?, foto = ? 
                 WHERE idUsuario = ?
             ");
             $result = $stmt->execute([$nombreUsuario, $correo, $idRol, $foto, $idUsuario]);
         }
-        
+
         if ($result) {
             echo json_encode(['success' => true, 'message' => 'Usuario actualizado exitosamente']);
         } else {
@@ -253,34 +258,35 @@ function editarUsuario() {
     }
 }
 
-function eliminarUsuario() {
+function eliminarUsuario()
+{
     global $db;
-    
+
     try {
         $idUsuario = $_POST['idUsuario'] ?? '';
-        
+
         if (empty($idUsuario)) {
             echo json_encode(['error' => 'ID de usuario requerido']);
             return;
         }
-        
+
         // No permitir eliminar administradores
-        $stmt = $db->prepare("SELECT idRol FROM Usuario WHERE idUsuario = ?");
+        $stmt = $db->prepare("SELECT idRol FROM usuario WHERE idUsuario = ?");
         $stmt->execute([$idUsuario]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if ($usuario['idRol'] == 1) {
             echo json_encode(['error' => 'No se puede eliminar un administrador']);
             return;
         }
-        
+
         // Eliminar progreso del usuario primero
-        $stmt = $db->prepare("DELETE FROM ProgresoUsuario WHERE idUsuario = ?");
+        $stmt = $db->prepare("DELETE FROM progresousuario WHERE idUsuario = ?");
         $stmt->execute([$idUsuario]);
-        
+
         // Eliminar usuario
-        $stmt = $db->prepare("DELETE FROM Usuario WHERE idUsuario = ?");
-        
+        $stmt = $db->prepare("DELETE FROM usuario WHERE idUsuario = ?");
+
         if ($stmt->execute([$idUsuario])) {
             echo json_encode(['success' => true, 'message' => 'Usuario eliminado exitosamente']);
         } else {
@@ -291,24 +297,25 @@ function eliminarUsuario() {
     }
 }
 
-function obtenerLenguajes() {
+function obtenerLenguajes()
+{
     global $db;
-    
+
     try {
         $stmt = $db->prepare("
             SELECT l.*, 
                    COUNT(n.idNivel) as totalNiveles,
                    COUNT(p.idProgresoUsuario) as totalCompletados
-            FROM Lenguaje l
-            LEFT JOIN Nivel n ON l.idLenguaje = n.idLenguaje
-            LEFT JOIN ProgresoUsuario p ON n.idNivel = p.idNivel
+            FROM lenguaje l
+            LEFT JOIN nivel n ON l.idLenguaje = n.idLenguaje
+            LEFT JOIN progresousuario p ON n.idNivel = p.idNivel
             GROUP BY l.idLenguaje
             ORDER BY l.nombre
         ");
-        
+
         $stmt->execute();
         $lenguajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         echo json_encode([
             'success' => true,
             'lenguajes' => $lenguajes
@@ -318,20 +325,21 @@ function obtenerLenguajes() {
     }
 }
 
-function crearLenguaje() {
+function crearLenguaje()
+{
     global $db;
-    
+
     try {
         $nombre = $_POST['nombre'] ?? '';
         $foto = $_POST['foto'] ?? '';
-        
+
         if (empty($nombre) || empty($foto)) {
             echo json_encode(['error' => 'Todos los campos son requeridos']);
             return;
         }
-        
+
         $stmt = $db->prepare("INSERT INTO Lenguaje (nombre, foto) VALUES (?, ?)");
-        
+
         if ($stmt->execute([$nombre, $foto])) {
             echo json_encode(['success' => true, 'message' => 'Lenguaje creado exitosamente']);
         } else {
@@ -342,21 +350,22 @@ function crearLenguaje() {
     }
 }
 
-function editarLenguaje() {
+function editarLenguaje()
+{
     global $db;
-    
+
     try {
         $idLenguaje = $_POST['idLenguaje'] ?? '';
         $nombre = $_POST['nombre'] ?? '';
         $foto = $_POST['foto'] ?? '';
-        
+
         if (empty($idLenguaje) || empty($nombre) || empty($foto)) {
             echo json_encode(['error' => 'Todos los campos son requeridos']);
             return;
         }
-        
+
         $stmt = $db->prepare("UPDATE Lenguaje SET nombre = ?, foto = ? WHERE idLenguaje = ?");
-        
+
         if ($stmt->execute([$nombre, $foto, $idLenguaje])) {
             echo json_encode(['success' => true, 'message' => 'Lenguaje actualizado exitosamente']);
         } else {
@@ -367,29 +376,30 @@ function editarLenguaje() {
     }
 }
 
-function eliminarLenguaje() {
+function eliminarLenguaje()
+{
     global $db;
-    
+
     try {
         $idLenguaje = $_POST['idLenguaje'] ?? '';
-        
+
         if (empty($idLenguaje)) {
             echo json_encode(['error' => 'ID de lenguaje requerido']);
             return;
         }
-        
+
         // Verificar si tiene niveles asociados
-        $stmt = $db->prepare("SELECT COUNT(*) as total FROM Nivel WHERE idLenguaje = ?");
+        $stmt = $db->prepare("SELECT COUNT(*) as total FROM nivel WHERE idLenguaje = ?");
         $stmt->execute([$idLenguaje]);
         $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-        
+
         if ($total > 0) {
             echo json_encode(['error' => 'No se puede eliminar un lenguaje que tiene niveles asociados']);
             return;
         }
-        
-        $stmt = $db->prepare("DELETE FROM Lenguaje WHERE idLenguaje = ?");
-        
+
+        $stmt = $db->prepare("DELETE FROM lenguaje WHERE idLenguaje = ?");
+
         if ($stmt->execute([$idLenguaje])) {
             echo json_encode(['success' => true, 'message' => 'Lenguaje eliminado exitosamente']);
         } else {
@@ -400,36 +410,37 @@ function eliminarLenguaje() {
     }
 }
 
-function obtenerNivelesAdmin() {
+function obtenerNivelesAdmin()
+{
     global $db;
-    
+
     try {
         $idLenguaje = $_GET['idLenguaje'] ?? '';
-        
+
         $query = "
             SELECT n.*, l.nombre as nombreLenguaje,
                    COUNT(p.idProgresoUsuario) as totalCompletados
-            FROM Nivel n
-            INNER JOIN Lenguaje l ON n.idLenguaje = l.idLenguaje
-            LEFT JOIN ProgresoUsuario p ON n.idNivel = p.idNivel
+            FROM nivel n
+            INNER JOIN lenguaje l ON n.idLenguaje = l.idLenguaje
+            LEFT JOIN progresousuario p ON n.idNivel = p.idNivel
         ";
-        
+
         if (!empty($idLenguaje)) {
             $query .= " WHERE n.idLenguaje = ?";
         }
-        
+
         $query .= " GROUP BY n.idNivel ORDER BY l.nombre, n.idNivel";
-        
+
         $stmt = $db->prepare($query);
-        
+
         if (!empty($idLenguaje)) {
             $stmt->execute([$idLenguaje]);
         } else {
             $stmt->execute();
         }
-        
+
         $niveles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         echo json_encode([
             'success' => true,
             'niveles' => $niveles
@@ -439,9 +450,10 @@ function obtenerNivelesAdmin() {
     }
 }
 
-function crearNivel() {
+function crearNivel()
+{
     global $db;
-    
+
     try {
         $titulo = $_POST['titulo'] ?? '';
         $idLenguaje = $_POST['idLenguaje'] ?? '';
@@ -449,17 +461,17 @@ function crearNivel() {
         $tiempoLimite = $_POST['tiempoLimite'] ?? '';
         $codigo = $_POST['codigo'] ?? '';
         $estado = $_POST['estado'] ?? 0;
-        
+
         if (empty($titulo) || empty($idLenguaje) || empty($ayudaDescripcion) || empty($tiempoLimite) || empty($codigo)) {
             echo json_encode(['error' => 'Todos los campos son requeridos']);
             return;
         }
-        
+
         $stmt = $db->prepare("
-            INSERT INTO Nivel (idLenguaje, titulo, ayudaDescripcion, tiempoLimite, codigo, estado) 
+            INSERT INTO nivel (idLenguaje, titulo, ayudaDescripcion, tiempoLimite, codigo, estado) 
             VALUES (?, ?, ?, ?, ?, ?)
         ");
-        
+
         if ($stmt->execute([$idLenguaje, $titulo, $ayudaDescripcion, $tiempoLimite, $codigo, $estado])) {
             echo json_encode(['success' => true, 'message' => 'Nivel creado exitosamente']);
         } else {
@@ -470,9 +482,10 @@ function crearNivel() {
     }
 }
 
-function editarNivel() {
+function editarNivel()
+{
     global $db;
-    
+
     try {
         $idNivel = $_POST['idNivel'] ?? '';
         $titulo = $_POST['titulo'] ?? '';
@@ -481,18 +494,18 @@ function editarNivel() {
         $tiempoLimite = $_POST['tiempoLimite'] ?? '';
         $codigo = $_POST['codigo'] ?? '';
         $estado = $_POST['estado'] ?? 0;
-        
+
         if (empty($idNivel) || empty($titulo) || empty($idLenguaje) || empty($ayudaDescripcion) || empty($tiempoLimite) || empty($codigo)) {
             echo json_encode(['error' => 'Todos los campos son requeridos']);
             return;
         }
-        
+
         $stmt = $db->prepare("
-            UPDATE Nivel 
+            UPDATE nivel 
             SET titulo = ?, idLenguaje = ?, ayudaDescripcion = ?, tiempoLimite = ?, codigo = ?, estado = ?
             WHERE idNivel = ?
         ");
-        
+
         if ($stmt->execute([$titulo, $idLenguaje, $ayudaDescripcion, $tiempoLimite, $codigo, $estado, $idNivel])) {
             echo json_encode(['success' => true, 'message' => 'Nivel actualizado exitosamente']);
         } else {
@@ -503,24 +516,25 @@ function editarNivel() {
     }
 }
 
-function eliminarNivel() {
+function eliminarNivel()
+{
     global $db;
-    
+
     try {
         $idNivel = $_POST['idNivel'] ?? '';
-        
+
         if (empty($idNivel)) {
             echo json_encode(['error' => 'ID de nivel requerido']);
             return;
         }
-        
+
         // Eliminar progreso asociado primero
-        $stmt = $db->prepare("DELETE FROM ProgresoUsuario WHERE idNivel = ?");
+        $stmt = $db->prepare("DELETE FROM progresousuario WHERE idNivel = ?");
         $stmt->execute([$idNivel]);
-        
+
         // Eliminar nivel
-        $stmt = $db->prepare("DELETE FROM Nivel WHERE idNivel = ?");
-        
+        $stmt = $db->prepare("DELETE FROM nivel WHERE idNivel = ?");
+
         if ($stmt->execute([$idNivel])) {
             echo json_encode(['success' => true, 'message' => 'Nivel eliminado exitosamente']);
         } else {
@@ -531,9 +545,10 @@ function eliminarNivel() {
     }
 }
 
-function getEstadisticasGenerales() {
+function getEstadisticasGenerales()
+{
     global $db;
-    
+
     try {
         // Métricas generales del sistema
         $stmt = $db->prepare("
@@ -543,23 +558,23 @@ function getEstadisticasGenerales() {
                 AVG(CAST(tiempoSegundos AS DECIMAL(8,2))) as tiempo_promedio,
                 COUNT(DISTINCT idUsuario) as usuarios_activos_total,
                 COUNT(DISTINCT idNivel) as niveles_jugados
-            FROM ProgresoUsuario
+            FROM progresousuario
         ");
         $stmt->execute();
         $metricasGenerales = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         // Tasa de completado (usuarios únicos que completaron vs total usuarios jugadores)
         $stmt = $db->prepare("
             SELECT 
-                (SELECT COUNT(*) FROM Usuario WHERE idRol = 2) as total_jugadores,
+                (SELECT COUNT(*) FROM usuario WHERE idRol = 2) as total_jugadores,
                 COUNT(DISTINCT p.idUsuario) as usuarios_con_progreso
-            FROM ProgresoUsuario p
+            FROM progresousuario p
         ");
         $stmt->execute();
         $tasaData = $stmt->fetch(PDO::FETCH_ASSOC);
-        $tasaCompletado = $tasaData['total_jugadores'] > 0 ? 
+        $tasaCompletado = $tasaData['total_jugadores'] > 0 ?
             round(($tasaData['usuarios_con_progreso'] / $tasaData['total_jugadores']) * 100, 1) : 0;
-        
+
         // Niveles más populares (más jugados)
         $stmt = $db->prepare("
             SELECT 
@@ -568,16 +583,16 @@ function getEstadisticasGenerales() {
                 COUNT(p.idProgresoUsuario) as veces_jugado,
                 AVG(CAST(p.estrellas AS DECIMAL(3,1))) as promedio_estrellas,
                 AVG(CAST(p.tiempoSegundos AS DECIMAL(8,2))) as tiempo_promedio
-            FROM Nivel n
-            INNER JOIN Lenguaje l ON n.idLenguaje = l.idLenguaje
-            INNER JOIN ProgresoUsuario p ON n.idNivel = p.idNivel
+            FROM nivel n
+            INNER JOIN lenguaje l ON n.idLenguaje = l.idLenguaje
+            INNER JOIN progresousuario p ON n.idNivel = p.idNivel
             GROUP BY n.idNivel, n.titulo, l.nombre
             ORDER BY COUNT(p.idProgresoUsuario) DESC
             LIMIT 5
         ");
         $stmt->execute();
         $nivelesPopulares = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Rendimiento por lenguaje
         $stmt = $db->prepare("
             SELECT 
@@ -586,15 +601,15 @@ function getEstadisticasGenerales() {
                 COUNT(DISTINCT p.idUsuario) as usuarios_activos,
                 AVG(CAST(p.estrellas AS DECIMAL(3,1))) as promedio_estrellas,
                 AVG(CAST(p.tiempoSegundos AS DECIMAL(8,2))) as tiempo_promedio
-            FROM Lenguaje l
-            INNER JOIN Nivel n ON l.idLenguaje = n.idLenguaje
-            INNER JOIN ProgresoUsuario p ON n.idNivel = p.idNivel
+            FROM lenguaje l
+            INNER JOIN nivel n ON l.idLenguaje = n.idLenguaje
+            INNER JOIN progresousuario p ON n.idNivel = p.idNivel
             GROUP BY l.idLenguaje, l.nombre
             ORDER BY COUNT(p.idProgresoUsuario) DESC
         ");
         $stmt->execute();
         $progresoLenguajes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Top usuarios por rendimiento
         $stmt = $db->prepare("
             SELECT 
@@ -604,8 +619,8 @@ function getEstadisticasGenerales() {
                 AVG(CAST(p.estrellas AS DECIMAL(3,1))) as promedio_estrellas,
                 AVG(CAST(p.tiempoSegundos AS DECIMAL(8,2))) as tiempo_promedio,
                 MIN(p.tiempoSegundos) as mejor_tiempo
-            FROM Usuario u
-            INNER JOIN ProgresoUsuario p ON u.idUsuario = p.idUsuario
+            FROM usuario u
+            INNER JOIN progresousuario p ON u.idUsuario = p.idUsuario
             WHERE u.idRol = 2
             GROUP BY u.idUsuario, u.nombreUsuario
             ORDER BY COUNT(p.idProgresoUsuario) DESC, SUM(p.estrellas) DESC
@@ -613,12 +628,12 @@ function getEstadisticasGenerales() {
         ");
         $stmt->execute();
         $topUsuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Actividad por día de la semana (simulada con distribución realista)
         $diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
         $totalCompletados = (int)$metricasGenerales['total_completados'];
         $actividadSemanal = [];
-        
+
         foreach ($diasSemana as $dia) {
             // Distribuir actividad de forma realista (más actividad entre semana)
             $factor = in_array($dia, ['Sáb', 'Dom']) ? 0.8 : 1.2;
@@ -628,20 +643,20 @@ function getEstadisticasGenerales() {
                 'completados' => max(0, $completados)
             ];
         }
-        
+
         // Distribución de dificultad (basada en estrellas obtenidas)
         $stmt = $db->prepare("
             SELECT 
                 estrellas,
                 COUNT(*) as cantidad,
-                ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM ProgresoUsuario), 1) as porcentaje
-            FROM ProgresoUsuario
+                ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM progresousuario), 1) as porcentaje
+            FROM progresousuario
             GROUP BY estrellas
             ORDER BY estrellas DESC
         ");
         $stmt->execute();
         $distribucionEstrellas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         echo json_encode([
             'success' => true,
             'estadisticas' => [
@@ -660,9 +675,7 @@ function getEstadisticasGenerales() {
                 'distribucion_estrellas' => $distribucionEstrellas
             ]
         ]);
-        
     } catch (Exception $e) {
         echo json_encode(['error' => 'Error al obtener estadísticas generales: ' . $e->getMessage()]);
     }
 }
-?>

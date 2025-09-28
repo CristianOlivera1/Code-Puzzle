@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
             card.className = 'language-progress-card';
             card.innerHTML = `
                 <div class="language-icon">
-                    <img src="../assets/images/${language.fotoLenguaje}.svg" alt="${language.nombreLenguaje}">
+                    <img src="../assets/images/${language.fotoLenguaje}" alt="${language.nombreLenguaje}">
                 </div>
                 <div class="language-info">
                     <h4>${language.nombreLenguaje}</h4>

@@ -3,7 +3,7 @@ require_once '../config/database.php';
 
 class ProgresoUsuario {
     private $conn;
-    private $table = 'ProgresoUsuario';
+    private $table = 'progresousuario';
 
     public $idProgresoUsuario;
     public $idUsuario;
@@ -52,8 +52,8 @@ class ProgresoUsuario {
     public function obtenerProgresoUsuario($idUsuario) {
         $query = "SELECT p.*, n.titulo, n.idLenguaje, l.nombre as nombreLenguaje 
                   FROM " . $this->table . " p 
-                  INNER JOIN Nivel n ON p.idNivel = n.idNivel 
-                  INNER JOIN Lenguaje l ON n.idLenguaje = l.idLenguaje 
+                  INNER JOIN nivel n ON p.idNivel = n.idNivel 
+                  INNER JOIN lenguaje l ON n.idLenguaje = l.idLenguaje 
                   WHERE p.idUsuario = :idUsuario 
                   ORDER BY l.idLenguaje, n.idNivel";
         
